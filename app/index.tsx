@@ -9,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ScrollView
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -55,7 +56,7 @@ export default function WelcomeScreen() {
             >
               <View style={styles.mascotContainer}>
                 <View style={styles.mascotBadge}>
-                  <Text style={styles.mascotText}>🐆 Cecy & Jaguar</Text>
+                  <Text style={styles.mascotText}>Cecy & Jaguar</Text>
                 </View>
               </View>
             </LinearGradient>
@@ -65,14 +66,15 @@ export default function WelcomeScreen() {
           <View style={styles.textContainer}>
             <Text style={styles.welcomeTitle}>¡Bienvenid@ a</Text>
             <Text style={styles.appTitle}>Cecy te orienta!</Text>
-            <Text style={styles.subtitle}>
+            {/* <Text style={styles.subtitle}>
               Tu espacio seguro para fortalecer tus habilidades y tomar
               decisiones informadas para tu futuro
-            </Text>
+            </Text> */}
           </View>
 
           {/* Features */}
           <View style={styles.featuresContainer}>
+            <ScrollView style={styles.scrollFeaturesContainer} >
             <View style={styles.featureItem}>
               <View style={[styles.featureIcon, { backgroundColor: "#F19433" }]}>
                 <Feather name="message-circle" size={18} color="#FFFFFF" />
@@ -93,6 +95,7 @@ export default function WelcomeScreen() {
               </View>
               <Text style={styles.featureText}>Información confiable</Text>
             </View>
+            </ScrollView>
           </View>
         </View>
 
@@ -244,6 +247,9 @@ const styles = StyleSheet.create({
   featuresContainer: {
     width: "100%",
     paddingHorizontal: 8,
+  },
+  scrollFeaturesContainer:{
+    flex:1,
   },
   featureItem: {
     flexDirection: "row",
