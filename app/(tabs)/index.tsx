@@ -46,11 +46,11 @@ export default function ChatScreen() {
   );
 
   const supportResponses = [
-    "I hear you, and I want you to know that your feelings are completely valid. It takes courage to reach out, and I'm proud of you for taking this step.",
-    "Thank you for sharing that with me. What you're going through sounds really difficult, and it's okay to feel overwhelmed sometimes.",
-    "I'm really glad you felt comfortable talking to me about this. You're not alone in feeling this way, and there are people who want to help.",
-    "It sounds like you're dealing with a lot right now. Remember that it's okay to take things one day at a time, and seeking support shows real strength.",
-    "I can tell this is weighing heavily on you. Your safety and wellbeing matter, and there are resources and people who care about helping you through this.",
+    "Te escucho y quiero que sepas que tus sentimientos son completamente válidos. Se necesita valentía para pedir ayuda, y estoy orgulloso de ti por dar este paso.",
+    "Gracias por compartir eso conmigo. Lo que estás pasando parece muy difícil, y está bien sentirse abrumado a veces.",
+    "Me alegra mucho que te hayas sentido cómodo hablando conmigo sobre esto. No eres el único que se siente así, y hay gente dispuesta a ayudarte.",
+    "Parece que estás lidiando con muchas cosas ahora mismo. Recuerda que está bien ir día a día, y buscar apoyo demuestra verdadera fortaleza.",
+    "Sé que esto te está afectando mucho. Tu seguridad y bienestar son importantes, y hay recursos y personas que se preocupan por ayudarte a superar esto.",
   ];
 
   useEffect(() => {
@@ -140,7 +140,7 @@ export default function ChatScreen() {
 
     // Reproducir nuevo mensaje
     Speech.speak(message.text, {
-      language: "en",
+      language: "es",
       onStart: () => setCurrentSpeakingId(message.id),
       onDone: () => setCurrentSpeakingId(null),
       onStopped: () => setCurrentSpeakingId(null),
