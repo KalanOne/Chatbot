@@ -246,12 +246,10 @@ const styles = StyleSheet.create({
   },
   featuresContainer: {
     width: "100%",
-    width: "100%",
     paddingHorizontal: 8,
   },
   scrollFeaturesContainer:{
-    flex:1,
-    
+    width: "100%",
   },
   featureItem: {
     flexDirection: "row",
