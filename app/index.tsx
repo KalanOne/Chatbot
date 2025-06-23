@@ -20,15 +20,15 @@ const { width, height } = Dimensions.get("window");
 
 export default function WelcomeScreen() {
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#45AAE3" />
-      
       <LinearGradient
         colors={["#45AAE3", "#53AB32"]}
-        style={styles.background}
+        style={[styles.background,{flex:1}]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
       >
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#45AAE3" />
+      
         {/* Header Section */}
         <View style={styles.header}>
           <View style={styles.logoContainer}>
@@ -129,8 +129,8 @@ export default function WelcomeScreen() {
         <View style={[styles.decorativeCircle, styles.circle1]} />
         <View style={[styles.decorativeCircle, styles.circle2]} />
         <View style={[styles.decorativeCircle, styles.circle3]} />
-      </LinearGradient>
     </SafeAreaView>
+      </LinearGradient>
   );
 }
 
