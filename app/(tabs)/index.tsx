@@ -31,7 +31,7 @@ export default function ChatScreen() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      text: "Hi there! I'm here to listen and support you. Whether you're dealing with bullying, feeling overwhelmed, or just need someone to talk to, I'm here for you. What's on your mind today?",
+      text: "¡Hola! Estoy aquí para escucharte y apoyarte. Ya sea que estés lidiando con el acoso escolar, te sientas abrumado o simplemente necesites hablar con alguien, estoy aquí para ti. ¿Qué tienes en mente hoy?",
       isUser: false,
       timestamp: new Date(),
     },
