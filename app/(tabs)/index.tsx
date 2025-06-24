@@ -165,8 +165,8 @@ export default function ChatScreen() {
     <View style={styles.container}>
       <KeyboardAvoidingView behavior={"padding"} style={styles.avoidcontainer}>
         <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true}/>
-        {/* <StatusBar barStyle="light-content" backgroundColor="#F19433" translucent={false}/> */}
-        <LinearGradient colors={["#F19433", "#FFB347"]} style={styles.header}>
+        {/* <LinearGradient colors={["#F19433", "#FFB347"]} style={styles.header}> */}
+        <LinearGradient colors={["#F19433", "#f7ad44"]} style={styles.header}>
           <View style={styles.headerContent}>
             <View>
               <Text style={styles.headerTitle}>Chat de Apoyo</Text>
