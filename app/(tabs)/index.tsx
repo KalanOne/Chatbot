@@ -173,7 +173,7 @@ export default function ChatScreen() {
           <View style={styles.headerContent}>
             <View>
               <Text style={styles.headerTitle}>Chat de Apoyo</Text>
-              <Text style={styles.headerSubtitle}>A safe space to talk</Text>
+              <Text style={styles.headerSubtitle}>Un espacio seguro para hablar</Text>
             </View>
             <TouchableOpacity
               onPress={handleSoundToggle}
