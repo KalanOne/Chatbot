@@ -172,7 +172,7 @@ export default function ChatScreen() {
         <LinearGradient colors={["#F19433", "#FFB347"]} style={styles.header}>
           <View style={styles.headerContent}>
             <View>
-              <Text style={styles.headerTitle}>Support Chat</Text>
+              <Text style={styles.headerTitle}>Chat de Apoyo</Text>
               <Text style={styles.headerSubtitle}>A safe space to talk</Text>
             </View>
             <TouchableOpacity
