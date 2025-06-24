@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    paddingTop: Platform.OS=="android"? 0 : 40,
+    paddingTop: Platform.OS=="android"? 0 : 50,
     paddingBottom: 15,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
