@@ -2,6 +2,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Animated,
+  Keyboard,
   KeyboardAvoidingView,
   ScrollView,
   StatusBar,
@@ -56,6 +57,14 @@ export default function ChatScreen() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    const listener = Keyboard.addListener("keyboardDidShow", scrollToBottom);
+
+    return () => {
+      listener.remove();
+    };
+  }, []);
 
   const scrollToBottom = () => {
     setTimeout(() => {
