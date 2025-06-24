@@ -28,14 +28,14 @@ export default function ResourcesScreen() {
       description: "24/7 free and confidential support for people in distress",
       phone: "988",
       icon: <Feather name="phone" size={24} color="#EF4444" />,
-      category: "Crisis Support",
+      category: "Apoyo en situaciones de crisis",
     },
     {
       title: "Crisis Text Line",
       description: "Text HOME to 741741 to reach a crisis counselor",
       phone: "741741",
       icon: <Feather name="message-square" size={24} color="#10B981" />,
-      category: "Crisis Support",
+      category: "Apoyo en situaciones de crisis",
     },
     {
       title: "StopBullying.gov",
@@ -49,21 +49,21 @@ export default function ResourcesScreen() {
       description: "24/7 confidential support for survivors",
       phone: "1-800-656-4673",
       icon: <Feather name="phone" size={24} color="#8B5CF6" />,
-      category: "Sexual Health",
+      category: "Salud sexual",
     },
     {
       title: "Planned Parenthood",
       description: "Sexual health information and services",
       url: "https://www.plannedparenthood.org",
       icon: <Feather name="globe" size={24} color="#EC4899" />,
-      category: "Sexual Health",
+      category: "Salud sexual",
     },
     {
       title: "Teen Line",
       description: "Teens helping teens through difficult times",
       phone: "1-800-852-8336",
       icon: <Feather name="phone" size={24} color="#F59E0B" />,
-      category: "Peer Support",
+      category: "Apoyo de compañeros",
     },
   ];
 
