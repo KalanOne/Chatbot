@@ -106,7 +106,7 @@ export default function ResourcesScreen() {
       <LinearGradient colors={["#53ab32", "#a6cd38"]} style={styles.header}>
         <Text style={styles.headerTitle}>Recursos de ayuda</Text>
         <Text style={styles.headerSubtitle}>
-          Professional support when you need it most
+          Apoyo profesional cuando más lo necesitas
         </Text>
       </LinearGradient>
 
