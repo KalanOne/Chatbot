@@ -100,7 +100,7 @@ export default function DiscoverScreen() {
               key={topic.id}
               style={[
                 styles.topicCard,
-                index % 2 === 0 ? styles.rightCard : styles.rightCard,
+                index % 2 === 0 ? styles.leftCard : styles.leftCard,
               ]}
               onPress={() => handleTopicPress(topic.route)}
               activeOpacity={0.8}
