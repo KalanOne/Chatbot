@@ -209,7 +209,7 @@ export default function ChatScreen() {
         </ScrollView>
         <View style={styles.inputContainer}>
           <View style={styles.inputWrapper}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={handleSoundToggle}
               style={styles.soundButtonInput}
             >
@@ -218,7 +218,7 @@ export default function ChatScreen() {
                 size={20}
                 color={sound ? "#94A3B8" : "#94A3B8"}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TextInput
               style={styles.textInput}
               value={inputText}
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    paddingVertical: 24,
+    paddingVertical: StatusBar.currentHeight ?? 24,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
   },
