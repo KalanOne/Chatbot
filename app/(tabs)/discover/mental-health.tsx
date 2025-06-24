@@ -240,7 +240,7 @@ export default function MentalHealthScreen() {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
