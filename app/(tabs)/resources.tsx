@@ -85,16 +85,17 @@ export default function ResourcesScreen() {
     try {
       if (resource.phone) {
         const url = `tel:${resource.phone}`;
-        const supported = await Linking.canOpenURL(url);
-        if (supported) {
+        // const supported = await Linking.canOpenURL(url);
+        // if (supported) {
           await Linking.openURL(url);
-        }
-      } else if (resource.url) {
+        // }
+      }
+      else if (resource.url) {
         const supported = await Linking.canOpenURL(resource.url);
         if (supported) {
-          await Linking.openURL(resource.url);
         }
       }
+          await Linking.openURL(resource.url);
     } catch (error) {
       console.error("Error opening resource:", error);
     }
