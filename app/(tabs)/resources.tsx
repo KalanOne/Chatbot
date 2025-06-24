@@ -72,7 +72,7 @@ export default function ResourcesScreen() {
     "Apoyo en situaciones de crisis",
     "Bullying",
     "Salud sexual",
-    "Peer Support",
+    "Apoyo de compañeros",
   ];
   const [selectedCategory, setSelectedCategory] = React.useState("All");
 
