@@ -91,7 +91,7 @@ export default function BullyingScreen() {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#F59E0B" />
       
       <LinearGradient colors={["#F59E0B", "#D97706"]} style={styles.header}>
