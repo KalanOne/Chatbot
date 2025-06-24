@@ -50,7 +50,7 @@ export default function ChatScreen() {
     "Gracias por compartir eso conmigo. Lo que estás pasando parece muy difícil, y está bien sentirse abrumado a veces.",
     "Me alegra mucho que te hayas sentido cómodo hablando conmigo sobre esto. No eres el único que se siente así, y hay gente dispuesta a ayudarte.",
     "Parece que estás lidiando con muchas cosas ahora mismo. Recuerda que está bien ir día a día, y buscar apoyo demuestra verdadera fortaleza.",
-    "Sé que esto te está afectando mucho. Tu seguridad y bienestar son importantes, y hay recursos y personas que se preocupan por ayudarte a superar esto.",
+    "I know this is affecting you deeply. Your safety and well-being are important, and there are resources and people who care about helping you through this.",
   ];
 
   useEffect(() => {
@@ -140,7 +140,7 @@ export default function ChatScreen() {
 
     // Reproducir nuevo mensaje
     Speech.speak(message.text, {
-      language: "es",
+      // language: "es",
       onStart: () => setCurrentSpeakingId(message.id),
       onDone: () => setCurrentSpeakingId(null),
       onStopped: () => setCurrentSpeakingId(null),
