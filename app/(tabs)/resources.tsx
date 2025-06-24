@@ -162,7 +162,7 @@ export default function ResourcesScreen() {
         ))}
 
         <View style={styles.emergencyCard}>
-          <Text style={styles.emergencyTitle}>In Case of Emergency</Text>
+          <Text style={styles.emergencyTitle}>En Caso de Emergencia</Text>
           <Text style={styles.emergencyText}>
             If you're in immediate danger or having thoughts of suicide, please
             call 911 or go to your nearest emergency room.
