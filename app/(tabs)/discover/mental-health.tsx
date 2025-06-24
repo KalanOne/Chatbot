@@ -116,7 +116,7 @@ export default function MentalHealthScreen() {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#8B5CF6" />
       
       <LinearGradient colors={["#8B5CF6", "#7C3AED"]} style={styles.header}>
