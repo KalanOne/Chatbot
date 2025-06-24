@@ -104,7 +104,8 @@ export default function ResourcesScreen() {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true}/>
-      <LinearGradient colors={["#53ab32", "#a6cd38"]} style={styles.header}>
+      {/* <LinearGradient colors={["#53ab32", "#a6cd38"]} style={styles.header}> */}
+      <LinearGradient colors={["#53ab32", "#9bbf36"]} style={styles.header}>
         <Text style={styles.headerTitle}>Recursos de ayuda</Text>
         <Text style={styles.headerSubtitle}>
           Apoyo profesional cuando más lo necesitas
