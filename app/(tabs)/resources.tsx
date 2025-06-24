@@ -102,7 +102,7 @@ export default function ResourcesScreen() {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#53ab32" />
+      <StatusBar barStyle="light-content" backgroundColor="transparent" />
       <LinearGradient colors={["#53ab32", "#a6cd38"]} style={styles.header}>
         <Text style={styles.headerTitle}>Recursos de ayuda</Text>
         <Text style={styles.headerSubtitle}>
