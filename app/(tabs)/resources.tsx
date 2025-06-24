@@ -104,7 +104,7 @@ export default function ResourcesScreen() {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#53ab32" />
       <LinearGradient colors={["#53ab32", "#a6cd38"]} style={styles.header}>
-        <Text style={styles.headerTitle}>Help Resources</Text>
+        <Text style={styles.headerTitle}>Recursos de ayuda</Text>
         <Text style={styles.headerSubtitle}>
           Professional support when you need it most
         </Text>
