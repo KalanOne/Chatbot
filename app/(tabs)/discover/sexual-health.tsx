@@ -120,7 +120,7 @@ export default function SexualHealthScreen() {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#EC4899" />
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true}/>
       
       <LinearGradient colors={["#EC4899", "#DB2777"]} style={styles.header}>
         <View style={styles.headerContent}>
