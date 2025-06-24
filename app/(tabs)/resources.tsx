@@ -171,7 +171,7 @@ export default function ResourcesScreen() {
             onPress={() => Linking.openURL("tel:911")}
           >
             <Feather name="phone" size={18} color="#FFFFFF" />
-            <Text style={styles.emergencyButtonText}>Call 911</Text>
+            <Text style={styles.emergencyButtonText}>Llama 911</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
