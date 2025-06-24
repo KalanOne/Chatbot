@@ -73,7 +73,7 @@ export default function DiscoverScreen() {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="transparent" />
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true}/>
       <LinearGradient colors={["#456AE3", "#45AAE3"]} style={styles.header}>
         <Text style={styles.headerTitle}>Descubre</Text>
         <Text style={styles.headerSubtitle}>
