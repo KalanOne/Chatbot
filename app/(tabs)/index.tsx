@@ -10,7 +10,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View,Platform
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -164,7 +164,7 @@ export default function ChatScreen() {
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView behavior={"padding"} style={styles.avoidcontainer}>
-        <StatusBar barStyle="light-content" backgroundColor="#F19433" translucent={false} />
+        <StatusBar barStyle="light-content" backgroundColor="#F19433" translucent={false}  hidden={Platform.OS == "android" ? false : true}/>
         {/* <StatusBar barStyle="light-content" /> */}
         {/* <LinearGradient colors={["#F19433", "#FFB347"]} style={styles.header}>
           <Text style={styles.headerTitle}>Support Chat</Text>
