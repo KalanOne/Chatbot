@@ -101,7 +101,7 @@ export default function ResourcesScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#53ab32" />
       <LinearGradient colors={["#53ab32", "#a6cd38"]} style={styles.header}>
         <Text style={styles.headerTitle}>Recursos de ayuda</Text>
@@ -175,7 +175,7 @@ export default function ResourcesScreen() {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
