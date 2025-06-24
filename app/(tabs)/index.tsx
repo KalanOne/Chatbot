@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    paddingVertical: StatusBar.currentHeight ?? 24,
+    paddingTop: StatusBar.currentHeight ?? 24,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
   },
