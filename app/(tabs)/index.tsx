@@ -164,7 +164,8 @@ export default function ChatScreen() {
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView behavior={"padding"} style={styles.avoidcontainer}>
-        <StatusBar barStyle="light-content" backgroundColor="#F19433" translucent={false}/>
+        <StatusBar barStyle="light-content"  translucent={true}/>
+        {/* <StatusBar barStyle="light-content" backgroundColor="#F19433" translucent={false}/> */}
         <LinearGradient colors={["#F19433", "#FFB347"]} style={styles.header}>
           <View style={styles.headerContent}>
             <View>
@@ -260,7 +261,7 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 20,
     marginTop: Platform.OS=="android"? 0 : 0,
-    paddingTop: Platform.OS=="android"? 0 : 50,
+    paddingTop: Platform.OS=="android"? StatusBar.currentHeight : 50,
     paddingBottom: 15,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
