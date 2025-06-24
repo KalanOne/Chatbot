@@ -230,7 +230,6 @@ const styles = StyleSheet.create({
     padding: 20,
     minHeight: 140,
     justifyContent: "space-between",
-    width:100
   },
   topicIconContainer: {
     alignSelf: "flex-start",
