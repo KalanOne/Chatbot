@@ -147,7 +147,7 @@ export default function SupportScreen() {
           <Text style={styles.helpButtonText}>Start Chatting</Text>
         </TouchableOpacity>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
