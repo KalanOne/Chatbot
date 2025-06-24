@@ -164,7 +164,7 @@ export default function ChatScreen() {
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView behavior={"padding"} style={styles.avoidcontainer}>
-        <StatusBar barStyle="light-content" backgroundColor="#F19433" />
+        <StatusBar barStyle="light-content" backgroundColor="#F19433"/>
         {/* <StatusBar barStyle="light-content" /> */}
         {/* <LinearGradient colors={["#F19433", "#FFB347"]} style={styles.header}>
           <Text style={styles.headerTitle}>Support Chat</Text>
