@@ -73,7 +73,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="discover"
         options={{
-          title: "Discover",
+          title: "Descubrir",
           tabBarIcon: ({ size, color }) => (
             <Feather name="compass" size={size} color={color} />
           ),
