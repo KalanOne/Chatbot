@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Platform
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -69,8 +70,8 @@ export default function AddictionsScreen() {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#EF4444" />
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true}/>
       
       <LinearGradient colors={["#EF4444", "#DC2626"]} style={styles.header}>
         <View style={styles.headerContent}>
@@ -170,7 +171,7 @@ export default function AddictionsScreen() {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -181,7 +182,9 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    paddingVertical: 24,
+    marginTop: Platform.OS=="android"? 0 : 0,
+    paddingTop: Platform.OS=="android"? (StatusBar.currentHeight ?? 30) + 10 : 50,
+    paddingBottom: 15,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
   },
