@@ -304,7 +304,6 @@ const styles = StyleSheet.create({
     color: "#1E293B",
     maxHeight: 100,
     marginRight: 8,
-    backgroundColor:"red",
     height:"100%"
   },
   sendButton: {
