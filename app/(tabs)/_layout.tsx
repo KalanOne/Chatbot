@@ -58,7 +58,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="support"
         options={{
-          title: "Support",
+          title: "Apoyo",
           tabBarIcon: ({ size, color }) => (
             <AntDesign name="hearto" size={size} color={color} />
           ),
