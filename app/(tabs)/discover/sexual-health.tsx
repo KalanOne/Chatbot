@@ -119,7 +119,7 @@ export default function SexualHealthScreen() {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#EC4899" />
       
       <LinearGradient colors={["#EC4899", "#DB2777"]} style={styles.header}>
@@ -256,7 +256,7 @@ export default function SexualHealthScreen() {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
