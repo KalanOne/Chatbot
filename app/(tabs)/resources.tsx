@@ -164,8 +164,7 @@ export default function ResourcesScreen() {
         <View style={styles.emergencyCard}>
           <Text style={styles.emergencyTitle}>En Caso de Emergencia</Text>
           <Text style={styles.emergencyText}>
-            If you're in immediate danger or having thoughts of suicide, please
-            call 911 or go to your nearest emergency room.
+            Si está en peligro inmediato o tiene pensamientos suicidas, llame al 911 o acuda a la sala de emergencias más cercana.
           </Text>
           <TouchableOpacity
             style={styles.emergencyButton}
