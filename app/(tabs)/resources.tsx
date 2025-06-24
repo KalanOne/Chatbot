@@ -68,8 +68,8 @@ export default function ResourcesScreen() {
   ];
 
   const categories = [
-    "All",
-    "Crisis Support",
+    "Todos",
+    "Apoyo en situaciones de crisis",
     "Bullying",
     "Sexual Health",
     "Peer Support",
@@ -89,13 +89,12 @@ export default function ResourcesScreen() {
         // if (supported) {
           await Linking.openURL(url);
         // }
-      }
-      else if (resource.url) {
-        const supported = await Linking.canOpenURL(resource.url);
-        if (supported) {
-        }
-      }
+      } else if (resource.url) {
+        // const supported = await Linking.canOpenURL(resource.url);
+        // if (supported) {
           await Linking.openURL(resource.url);
+        // }
+      }
     } catch (error) {
       console.error("Error opening resource:", error);
     }
