@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Platform
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -71,8 +72,8 @@ export default function DiscoverScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#456AE3" />
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="transparent" />
       <LinearGradient colors={["#456AE3", "#45AAE3"]} style={styles.header}>
         <Text style={styles.headerTitle}>Descubre</Text>
         <Text style={styles.headerSubtitle}>
@@ -155,7 +156,7 @@ export default function DiscoverScreen() {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -166,7 +167,9 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    paddingVertical: 24,
+    marginTop: Platform.OS=="android"? 0 : 0,
+    paddingTop: Platform.OS=="android"? StatusBar.currentHeight + 10 : 50,
+    paddingBottom: 15,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
   },
