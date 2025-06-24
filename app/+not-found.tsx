@@ -7,9 +7,9 @@ export default function NotFoundScreen() {
       <StatusBar barStyle="light-content" backgroundColor="#121212" />
       <Stack.Screen options={{ title: "Oops!" }} />
       <View style={styles.container}>
-        <Text style={styles.text}>This screen doesn't exist.</Text>
+        <Text style={styles.text}>Esta pantalla no existe.</Text>
         <Link href="/" style={styles.link}>
-          <Text>Go to home screen!</Text>
+          <Text>¡Vaya a la pantalla de inicio!</Text>
         </Link>
       </View>
     </>
