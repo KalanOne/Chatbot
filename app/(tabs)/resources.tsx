@@ -1,6 +1,6 @@
 import Feather from "@expo/vector-icons/Feather";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
+import React, {useState} from "react";
 import {
   Linking,
   ScrollView,
@@ -9,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Platform
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -28,14 +29,14 @@ export default function ResourcesScreen() {
       description: "24/7 free and confidential support for people in distress",
       phone: "988",
       icon: <Feather name="phone" size={24} color="#EF4444" />,
-      category: "Crisis Support",
+      category: "Apoyo en situaciones de crisis",
     },
     {
       title: "Crisis Text Line",
       description: "Text HOME to 741741 to reach a crisis counselor",
       phone: "741741",
       icon: <Feather name="message-square" size={24} color="#10B981" />,
-      category: "Crisis Support",
+      category: "Apoyo en situaciones de crisis",
     },
     {
       title: "StopBullying.gov",
@@ -49,35 +50,35 @@ export default function ResourcesScreen() {
       description: "24/7 confidential support for survivors",
       phone: "1-800-656-4673",
       icon: <Feather name="phone" size={24} color="#8B5CF6" />,
-      category: "Sexual Health",
+      category: "Salud sexual",
     },
     {
       title: "Planned Parenthood",
       description: "Sexual health information and services",
       url: "https://www.plannedparenthood.org",
       icon: <Feather name="globe" size={24} color="#EC4899" />,
-      category: "Sexual Health",
+      category: "Salud sexual",
     },
     {
       title: "Teen Line",
       description: "Teens helping teens through difficult times",
       phone: "1-800-852-8336",
       icon: <Feather name="phone" size={24} color="#F59E0B" />,
-      category: "Peer Support",
+      category: "Apoyo de compañeros",
     },
   ];
 
   const categories = [
-    "All",
-    "Crisis Support",
+    "Todos",
+    "Apoyo en situaciones de crisis",
     "Bullying",
-    "Sexual Health",
-    "Peer Support",
+    "Salud sexual",
+    "Apoyo de compañeros",
   ];
-  const [selectedCategory, setSelectedCategory] = React.useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("Todos");
 
   const filteredResources =
-    selectedCategory === "All"
+    selectedCategory === "Todos"
       ? resources
       : resources.filter((resource) => resource.category === selectedCategory);
 
@@ -85,15 +86,15 @@ export default function ResourcesScreen() {
     try {
       if (resource.phone) {
         const url = `tel:${resource.phone}`;
-        const supported = await Linking.canOpenURL(url);
-        if (supported) {
+        // const supported = await Linking.canOpenURL(url);
+        // if (supported) {
           await Linking.openURL(url);
-        }
+        // }
       } else if (resource.url) {
-        const supported = await Linking.canOpenURL(resource.url);
-        if (supported) {
+        // const supported = await Linking.canOpenURL(resource.url);
+        // if (supported) {
           await Linking.openURL(resource.url);
-        }
+        // }
       }
     } catch (error) {
       console.error("Error opening resource:", error);
@@ -101,12 +102,13 @@ export default function ResourcesScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#53ab32" />
-      <LinearGradient colors={["#53ab32", "#a6cd38"]} style={styles.header}>
-        <Text style={styles.headerTitle}>Help Resources</Text>
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true}/>
+      {/* <LinearGradient colors={["#53ab32", "#a6cd38"]} style={styles.header}> */}
+      <LinearGradient colors={["#53ab32", "#9bbf36"]} style={styles.header}>
+        <Text style={styles.headerTitle}>Recursos de ayuda</Text>
         <Text style={styles.headerSubtitle}>
-          Professional support when you need it most
+          Apoyo profesional cuando más lo necesitas
         </Text>
       </LinearGradient>
 
@@ -162,21 +164,20 @@ export default function ResourcesScreen() {
         ))}
 
         <View style={styles.emergencyCard}>
-          <Text style={styles.emergencyTitle}>In Case of Emergency</Text>
+          <Text style={styles.emergencyTitle}>En Caso de Emergencia</Text>
           <Text style={styles.emergencyText}>
-            If you're in immediate danger or having thoughts of suicide, please
-            call 911 or go to your nearest emergency room.
+            Si está en peligro inmediato o tiene pensamientos suicidas, llame al 911 o acuda a la sala de emergencias más cercana.
           </Text>
           <TouchableOpacity
             style={styles.emergencyButton}
             onPress={() => Linking.openURL("tel:911")}
           >
             <Feather name="phone" size={18} color="#FFFFFF" />
-            <Text style={styles.emergencyButtonText}>Call 911</Text>
+            <Text style={styles.emergencyButtonText}>Llama 911</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -187,7 +188,9 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    paddingVertical: 24,
+    marginTop: Platform.OS=="android"? 0 : 0,
+    paddingTop: Platform.OS=="android"? S(StatusBar.currentHeight ?? 30) + 10 : 50,
+    paddingBottom: 15,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
   },

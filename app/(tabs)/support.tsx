@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Platform
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -50,8 +51,8 @@ export default function SupportScreen() {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#FF37A1" />
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true}/>
       <LinearGradient colors={["#FF37A1", "#FF67B8"]} style={styles.header}>
         <Text style={styles.headerTitle}>Support & Safety</Text>
         <Text style={styles.headerSubtitle}>
@@ -147,7 +148,7 @@ export default function SupportScreen() {
           <Text style={styles.helpButtonText}>Start Chatting</Text>
         </TouchableOpacity>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -158,7 +159,9 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    paddingVertical: 24,
+    marginTop: Platform.OS=="android"? 0 : 0,
+    paddingTop: Platform.OS=="android"? (StatusBar.currentHeight ?? 30) + 10 : 50,
+    paddingBottom: 15,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
   },

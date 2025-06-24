@@ -43,7 +43,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="resources"
         options={{
-          title: "Resources",
+          title: "Recursos",
           tabBarIcon: ({ size, color }) => {
             return <Feather name="book-open" size={size} color={color} />;
           },
@@ -58,7 +58,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="support"
         options={{
-          title: "Support",
+          title: "Apoyo",
           tabBarIcon: ({ size, color }) => (
             <AntDesign name="hearto" size={size} color={color} />
           ),
@@ -73,7 +73,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="discover"
         options={{
-          title: "Discover",
+          title: "Descubrir",
           tabBarIcon: ({ size, color }) => (
             <Feather name="compass" size={size} color={color} />
           ),
