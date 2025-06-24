@@ -162,7 +162,7 @@ export default function ChatScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <KeyboardAvoidingView behavior={"padding"} style={styles.avoidcontainer}>
         <StatusBar barStyle="light-content" backgroundColor="#F19433" />
         {/* <LinearGradient colors={["#F19433", "#FFB347"]} style={styles.header}>
@@ -249,7 +249,7 @@ export default function ChatScreen() {
           </View>
         </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }
 
