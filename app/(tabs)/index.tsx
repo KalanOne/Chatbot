@@ -165,7 +165,7 @@ export default function ChatScreen() {
     <View style={styles.container}>
       <KeyboardAvoidingView behavior={"padding"} style={styles.avoidcontainer}>
         {/* <StatusBar barStyle="light-content" backgroundColor="#F19433" /> */}
-        <StatusBar barStyle="light-content" translucent />
+        <StatusBar barStyle="light-content" translucent={true} />
         {/* <LinearGradient colors={["#F19433", "#FFB347"]} style={styles.header}>
           <Text style={styles.headerTitle}>Support Chat</Text>
           <Text style={styles.headerSubtitle}>A safe space to talk</Text>
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 20,
     // paddingTop: StatusBar.currentHeight ?? 24,
-    paddingTop: 0,
+    // paddingTop: 0,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
   },
