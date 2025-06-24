@@ -50,7 +50,7 @@ export default function SupportScreen() {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" />
       <LinearGradient colors={["#FF37A1", "#FF67B8"]} style={styles.header}>
         <Text style={styles.headerTitle}>Support & Safety</Text>
