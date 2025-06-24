@@ -92,7 +92,7 @@ export default function BullyingScreen() {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#F59E0B" />
+     <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true}/>
       
       <LinearGradient colors={["#F59E0B", "#D97706"]} style={styles.header}>
         <View style={styles.headerContent}>
