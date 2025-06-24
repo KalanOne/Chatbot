@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    marginTop: Platform.OS=="android"? StatusBar.currentHeight : 0,
+    marginTop: Platform.OS=="android"? 0 : 0,
     paddingTop: Platform.OS=="android"? 0 : 50,
     paddingBottom: 15,
     borderBottomLeftRadius: 24,
