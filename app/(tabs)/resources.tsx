@@ -1,6 +1,6 @@
 import Feather from "@expo/vector-icons/Feather";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
+import React, {useState} from "react";
 import {
   Linking,
   ScrollView,
@@ -74,7 +74,7 @@ export default function ResourcesScreen() {
     "Salud sexual",
     "Apoyo de compañeros",
   ];
-  const [selectedCategory, setSelectedCategory] = React.useState("Todos");
+  const [selectedCategory, setSelectedCategory] = useState("Todos");
 
   const filteredResources =
     selectedCategory === "Todos"
