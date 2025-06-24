@@ -204,7 +204,7 @@ export default function BullyingScreen() {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
