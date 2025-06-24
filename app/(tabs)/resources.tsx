@@ -74,10 +74,10 @@ export default function ResourcesScreen() {
     "Salud sexual",
     "Apoyo de compañeros",
   ];
-  const [selectedCategory, setSelectedCategory] = React.useState("All");
+  const [selectedCategory, setSelectedCategory] = React.useState("Todos");
 
   const filteredResources =
-    selectedCategory === "All"
+    selectedCategory === "Todos"
       ? resources
       : resources.filter((resource) => resource.category === selectedCategory);
 
