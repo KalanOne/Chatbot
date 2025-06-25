@@ -4,31 +4,31 @@ import React from "react";
 import {
   Dimensions,
   Image,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  ScrollView
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import Feather from "@expo/vector-icons/Feather";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Feather from "@expo/vector-icons/Feather";
 
 const { width, height } = Dimensions.get("window");
 
 export default function WelcomeScreen() {
   return (
-      <LinearGradient
-        colors={["#45AAE3", "#53AB32"]}
-        style={[styles.background,{flex:1}]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-      >
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#45AAE3" />
-      
+    <LinearGradient
+      colors={["#45AAE3", "#53AB32"]}
+      style={[styles.background, { flex: 1 }]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+    >
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="light-content" backgroundColor="#45AAE3" />
+
         {/* Header Section */}
         <View style={styles.header}>
           <View style={styles.logoContainer}>
@@ -44,22 +44,20 @@ export default function WelcomeScreen() {
           {/* Hero Image */}
           <View style={styles.imageContainer}>
             <Image
-              source={{
-                uri: "https://images.pexels.com/photos/5212317/pexels-photo-5212317.jpeg?auto=compress&cs=tinysrgb&w=600&h=800&fit=crop",
-              }}
+              source={require("@/assets/images/ImagenApp.jpg")}
               style={styles.heroImage}
               resizeMode="cover"
             />
-            <LinearGradient
+            {/* <LinearGradient
               colors={["transparent", "rgba(0,0,0,0.7)"]}
               style={styles.imageOverlay}
             >
               <View style={styles.mascotContainer}>
                 <View style={styles.mascotBadge}>
-                  <Text style={styles.mascotText}>Cecy & Jaguar</Text>
+                  <Text style={styles.mascotText}>Cecy & Ocelote</Text>
                 </View>
               </View>
-            </LinearGradient>
+            </LinearGradient> */}
           </View>
 
           {/* Welcome Text */}
@@ -74,27 +72,33 @@ export default function WelcomeScreen() {
 
           {/* Features */}
           <View style={styles.featuresContainer}>
-            <ScrollView style={styles.scrollFeaturesContainer} >
-            <View style={styles.featureItem}>
-              <View style={[styles.featureIcon, { backgroundColor: "#F19433" }]}>
-                <Feather name="message-circle" size={18} color="#FFFFFF" />
+            <ScrollView style={styles.scrollFeaturesContainer}>
+              <View style={styles.featureItem}>
+                <View
+                  style={[styles.featureIcon, { backgroundColor: "#F19433" }]}
+                >
+                  <Feather name="message-circle" size={18} color="#FFFFFF" />
+                </View>
+                <Text style={styles.featureText}>Chat de apoyo 24/7</Text>
               </View>
-              <Text style={styles.featureText}>Chat de apoyo 24/7</Text>
-            </View>
-            
-            <View style={styles.featureItem}>
-              <View style={[styles.featureIcon, { backgroundColor: "#53AB32" }]}>
-                <Feather name="book-open" size={18} color="#FFFFFF" />
+
+              <View style={styles.featureItem}>
+                <View
+                  style={[styles.featureIcon, { backgroundColor: "#53AB32" }]}
+                >
+                  <Feather name="book-open" size={18} color="#FFFFFF" />
+                </View>
+                <Text style={styles.featureText}>Recursos educativos</Text>
               </View>
-              <Text style={styles.featureText}>Recursos educativos</Text>
-            </View>
-            
-            <View style={styles.featureItem}>
-              <View style={[styles.featureIcon, { backgroundColor: "#E74889" }]}>
-                <Feather name="shield" size={18} color="#FFFFFF" />
+
+              <View style={styles.featureItem}>
+                <View
+                  style={[styles.featureIcon, { backgroundColor: "#E74889" }]}
+                >
+                  <Feather name="shield" size={18} color="#FFFFFF" />
+                </View>
+                <Text style={styles.featureText}>Información confiable</Text>
               </View>
-              <Text style={styles.featureText}>Información confiable</Text>
-            </View>
             </ScrollView>
           </View>
         </View>
@@ -129,8 +133,8 @@ export default function WelcomeScreen() {
         <View style={[styles.decorativeCircle, styles.circle1]} />
         <View style={[styles.decorativeCircle, styles.circle2]} />
         <View style={[styles.decorativeCircle, styles.circle3]} />
-    </SafeAreaView>
-      </LinearGradient>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
@@ -248,7 +252,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 8,
   },
-  scrollFeaturesContainer:{
+  scrollFeaturesContainer: {
     width: "100%",
   },
   featureItem: {

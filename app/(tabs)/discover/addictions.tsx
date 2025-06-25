@@ -2,15 +2,14 @@ import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import React from "react";
 import {
+  Platform,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Platform
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import Feather from "@expo/vector-icons/Feather";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -71,8 +70,12 @@ export default function AddictionsScreen() {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true}/>
-      
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent={true}
+      />
+
       <LinearGradient colors={["#EF4444", "#DC2626"]} style={styles.header}>
         <View style={styles.headerContent}>
           <TouchableOpacity
@@ -83,9 +86,7 @@ export default function AddictionsScreen() {
           </TouchableOpacity>
           <View style={styles.headerTextContainer}>
             <Text style={styles.headerTitle}>Adicciones</Text>
-            <Text style={styles.headerSubtitle}>
-              Información y prevención
-            </Text>
+            <Text style={styles.headerSubtitle}>Información y prevención</Text>
           </View>
         </View>
       </LinearGradient>
@@ -125,9 +126,7 @@ export default function AddictionsScreen() {
           <View style={styles.warningCard}>
             <View style={styles.warningHeader}>
               <Feather name="alert-triangle" size={24} color="#F59E0B" />
-              <Text style={styles.warningTitle}>
-                Reconoce estas señales
-              </Text>
+              <Text style={styles.warningTitle}>Reconoce estas señales</Text>
             </View>
             {warningSignals.map((signal, index) => (
               <View key={index} style={styles.warningItem}>
@@ -182,8 +181,9 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    marginTop: Platform.OS=="android"? 0 : 0,
-    paddingTop: Platform.OS=="android"? (StatusBar.currentHeight ?? 30) + 10 : 50,
+    marginTop: Platform.OS == "android" ? 0 : 0,
+    paddingTop:
+      Platform.OS == "android" ? (StatusBar.currentHeight ?? 30) + 10 : 50,
     paddingBottom: 15,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,

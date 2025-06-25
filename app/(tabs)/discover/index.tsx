@@ -2,20 +2,19 @@ import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import React from "react";
 import {
+  Platform,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Platform
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-import Feather from "@expo/vector-icons/Feather";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Feather from "@expo/vector-icons/Feather";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 interface Topic {
   id: string;
@@ -73,7 +72,11 @@ export default function DiscoverScreen() {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true}/>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent={true}
+      />
       <LinearGradient colors={["#456AE3", "#45AAE3"]} style={styles.header}>
         <Text style={styles.headerTitle}>Descubre</Text>
         <Text style={styles.headerSubtitle}>
@@ -111,9 +114,7 @@ export default function DiscoverScreen() {
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
               >
-                <View style={styles.topicIconContainer}>
-                  {topic.icon}
-                </View>
+                <View style={styles.topicIconContainer}>{topic.icon}</View>
                 <View style={styles.topicContent}>
                   <Text style={styles.topicTitle}>{topic.title}</Text>
                   <Text style={styles.topicDescription}>
@@ -167,8 +168,9 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    marginTop: Platform.OS=="android"? 0 : 0,
-    paddingTop: Platform.OS=="android"? (StatusBar.currentHeight ?? 30) + 10 : 50,
+    marginTop: Platform.OS == "android" ? 0 : 0,
+    paddingTop:
+      Platform.OS == "android" ? (StatusBar.currentHeight ?? 30) + 10 : 50,
     paddingBottom: 15,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
