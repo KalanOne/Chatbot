@@ -8,6 +8,7 @@ export default function DiscoverLayout() {
       <Stack.Screen name="bullying" />
       <Stack.Screen name="mental-health" />
       <Stack.Screen name="sexual-health" />
+      <Stack.Screen name="cecy-presentation" />
     </Stack>
   );
 }
