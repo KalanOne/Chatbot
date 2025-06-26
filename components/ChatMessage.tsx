@@ -1,6 +1,7 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useFocusEffect } from "expo-router";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -36,27 +37,34 @@ function ChatMessage({
   const [showTyping, setShowTyping] = useState(!message.isUser);
   const opacity = useSharedValue(0);
   const translateY = useSharedValue(20);
+  const currentIndexRef = useRef(0);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const totalDuration = 3000;
 
   useEffect(() => {
     opacity.value = withTiming(1, { duration: 300 });
     translateY.value = withSpring(0, { damping: 15, stiffness: 150 });
 
     if (!message.isUser) {
-      let currentIndex = 0;
-      const typingSpeed = 20;
-      if (sound) onSpeak(); // Reproducir al inicio
+      currentIndexRef.current = 0;
+      const totalChars = message.text.length;
+      const typingSpeed = totalChars > 0 ? totalDuration / totalChars : 0;
+
+      if (sound) onSpeak();
 
       const typeText = () => {
-        if (currentIndex < message.text.length) {
-          setDisplayText(message.text.substring(0, currentIndex + 1));
-          currentIndex++;
-          setTimeout(typeText, typingSpeed);
+        if (currentIndexRef.current < totalChars) {
+          setDisplayText(
+            message.text.substring(0, currentIndexRef.current + 1)
+          );
+          currentIndexRef.current++;
+          timeoutRef.current = setTimeout(typeText, typingSpeed);
         } else {
           setShowTyping(false);
         }
       };
 
-      setTimeout(typeText, 500);
+      timeoutRef.current = setTimeout(typeText, 500);
     } else {
       setDisplayText(message.text);
       setShowTyping(false);
@@ -66,6 +74,7 @@ function ChatMessage({
       if (!message.isUser && isSpeaking) {
         onStop();
       }
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, [message.text, message.isUser]);
 
@@ -78,6 +87,18 @@ function ChatMessage({
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        if (currentIndexRef.current < message.text.length) {
+          if (timeoutRef.current) clearTimeout(timeoutRef.current);
+          setDisplayText(message.text);
+          setShowTyping(false);
+        }
+      };
+    }, [message.text])
+  );
+
   return (
     <Animated.View style={animatedStyle}>
       <View
@@ -89,7 +110,12 @@ function ChatMessage({
         ]}
       >
         <View style={styles.messageContainerIcon}>
-          {!message.isUser && <AntDesign name="user" size={24} color="black" />}
+          {!message.isUser && (
+            <Image
+              source={require("@/assets/images/CecyApp.jpg")}
+              style={{ width: 30, height: 30, borderRadius: 12 }}
+            />
+          )}
           <View
             style={[
               styles.messageBubble,
@@ -106,7 +132,7 @@ function ChatMessage({
               {showTyping && <Text style={styles.cursor}>|</Text>}
             </Text>
           </View>
-          {message.isUser && <AntDesign name="user" size={24} color="black" />}
+          {message.isUser && <AntDesign name="user" size={30} color="black" />}
         </View>
         <View style={styles.timeStampReproducerContainer}>
           {!message.isUser && sound && (
@@ -192,7 +218,7 @@ const styles = StyleSheet.create({
   },
   timeStampReproducerContainer: {
     marginTop: 4,
-    marginStart: 26,
+    marginStart: 30,
     flexDirection: "row",
     alignItems: "center",
   },
@@ -203,7 +229,7 @@ const styles = StyleSheet.create({
     // color: "#64748B",
     color: "#94A3B8",
     textAlign: "right",
-    marginEnd: 30,
+    marginEnd: 38,
   },
   botTimestamp: {
     color: "#94A3B8",

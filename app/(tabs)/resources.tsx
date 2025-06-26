@@ -1,17 +1,16 @@
 import Feather from "@expo/vector-icons/Feather";
 import { LinearGradient } from "expo-linear-gradient";
-import React, {useState} from "react";
+import React, { useMemo, useState } from "react";
 import {
   Linking,
+  Platform,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Platform
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 interface Resource {
   title: string;
@@ -68,13 +67,10 @@ export default function ResourcesScreen() {
     },
   ];
 
-  const categories = [
-    "Todos",
-    "Apoyo en situaciones de crisis",
-    "Bullying",
-    "Salud sexual",
-    "Apoyo de compañeros",
-  ];
+  const categories = useMemo(() => {
+    return ["Todos", ...new Set(resources.map((item) => item.category))];
+  }, [resources]);
+
   const [selectedCategory, setSelectedCategory] = useState("Todos");
 
   const filteredResources =
@@ -88,12 +84,12 @@ export default function ResourcesScreen() {
         const url = `tel:${resource.phone}`;
         // const supported = await Linking.canOpenURL(url);
         // if (supported) {
-          await Linking.openURL(url);
+        await Linking.openURL(url);
         // }
       } else if (resource.url) {
         // const supported = await Linking.canOpenURL(resource.url);
         // if (supported) {
-          await Linking.openURL(resource.url);
+        await Linking.openURL(resource.url);
         // }
       }
     } catch (error) {
@@ -103,7 +99,11 @@ export default function ResourcesScreen() {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true}/>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent={true}
+      />
       {/* <LinearGradient colors={["#53ab32", "#a6cd38"]} style={styles.header}> */}
       <LinearGradient colors={["#53ab32", "#9bbf36"]} style={styles.header}>
         <Text style={styles.headerTitle}>Recursos de ayuda</Text>
@@ -166,7 +166,8 @@ export default function ResourcesScreen() {
         <View style={styles.emergencyCard}>
           <Text style={styles.emergencyTitle}>En Caso de Emergencia</Text>
           <Text style={styles.emergencyText}>
-            Si está en peligro inmediato o tiene pensamientos suicidas, llame al 911 o acuda a la sala de emergencias más cercana.
+            Si está en peligro inmediato o tiene pensamientos suicidas, llame al
+            911 o acuda a la sala de emergencias más cercana.
           </Text>
           <TouchableOpacity
             style={styles.emergencyButton}
@@ -188,8 +189,9 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    marginTop: Platform.OS=="android"? 0 : 0,
-    paddingTop: Platform.OS=="android"? S(StatusBar.currentHeight ?? 30) + 10 : 50,
+    marginTop: Platform.OS == "android" ? 0 : 0,
+    paddingTop:
+      Platform.OS == "android" ? (StatusBar.currentHeight ?? 30) + 10 : 50,
     paddingBottom: 15,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
