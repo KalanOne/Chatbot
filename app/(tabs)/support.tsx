@@ -2,6 +2,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import React from "react";
 import {
+  Platform,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -9,7 +10,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Feather from "@expo/vector-icons/Feather";
@@ -17,45 +17,49 @@ import Feather from "@expo/vector-icons/Feather";
 export default function SupportScreen() {
   const supportTips = [
     {
-      title: "You Are Not Alone",
+      title: "No Estas Sol@",
       description:
-        "Whatever you're going through, there are people who care and want to help.",
+        "Sea cual sea tu situación, hay personas que se preocupan y quieren ayudarte.",
       icon: <Feather name="users" size={24} color="#10B981" />,
     },
     {
-      title: "It's Okay to Ask for Help",
-      description: "Seeking support is a sign of strength, not weakness.",
+      title: "Está Bien Pedir Ayuda",
+      description: "Buscar apoyo es un signo de fortaleza, no de debilidad.",
       icon: <AntDesign name="hearto" size={24} color="#EC4899" />,
     },
     {
-      title: "Your Feelings Are Valid",
+      title: "Tus Sentimientos Son Válidos",
       description:
-        "Whatever you're feeling right now is completely understandable.",
+        "Lo que sea que estés sintiendo ahora mismo es completamente comprensible.",
       icon: <AntDesign name="checkcircle" size={24} color="#3B82F6" />,
     },
     {
-      title: "Take It One Day at a Time",
+      title: "Tómalo Un Día A La Vez",
       description:
-        "You don't have to solve everything today. Small steps count.",
+        "No tienes que resolverlo todo hoy. Los pequeños pasos cuentan.",
       icon: <AntDesign name="staro" size={24} color="#F59E0B" />,
     },
   ];
 
   const safetyReminders = [
-    "Your privacy is important to us",
-    "This chat is not monitored by parents or schools",
-    "We don't store your personal information",
-    "You can talk about anything that's bothering you",
-    "If you're in immediate danger, please call 911",
+    "Su privacidad es importante para nosotros",
+    "Este chat no está supervisado por padres ni escuelas.",
+    "No almacenamos tu información personal",
+    "Puedes hablar de cualquier cosa que te preocupe.",
+    "Si está en peligro inmediato, llame al 911.",
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#FF37A1" />
+    <View style={styles.container}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent={true}
+      />
       <LinearGradient colors={["#FF37A1", "#FF67B8"]} style={styles.header}>
-        <Text style={styles.headerTitle}>Support & Safety</Text>
+        <Text style={styles.headerTitle}>Apoyo y seguridad</Text>
         <Text style={styles.headerSubtitle}>
-          You matter, and your wellbeing is important
+          Tú importas y tu bienestar es importante
         </Text>
       </LinearGradient>
 
@@ -66,7 +70,7 @@ export default function SupportScreen() {
       >
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { marginBottom: 5 }]}>
-            Remember This
+            Recuerda esto
           </Text>
           {supportTips.map((tip, index) => (
             <View key={index} style={styles.tipCard}>
@@ -82,7 +86,7 @@ export default function SupportScreen() {
         <View style={styles.section}>
           <View style={styles.safetyHeader}>
             <Feather name="shield" size={24} color="#FF37A1" />
-            <Text style={styles.sectionTitle}>Your Safety & Privacy</Text>
+            <Text style={styles.sectionTitle}>Tu seguridad y privacidad</Text>
           </View>
           <View style={styles.safetyCard}>
             {safetyReminders.map((reminder, index) => (
@@ -96,7 +100,7 @@ export default function SupportScreen() {
 
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { marginBottom: 5 }]}>
-            How This Works
+            Cómo funciona esto
           </Text>
           <View style={styles.howItWorksCard}>
             <View style={styles.step}>
@@ -104,9 +108,9 @@ export default function SupportScreen() {
                 <Text style={styles.stepNumberText}>1</Text>
               </View>
               <View style={styles.stepContent}>
-                <Text style={styles.stepTitle}>Start a Conversation</Text>
+                <Text style={styles.stepTitle}>Iniciar una conversación</Text>
                 <Text style={styles.stepDescription}>
-                  Type or use voice messages to share what's on your mind
+                  Escribe o usa mensajes de voz para compartir lo que piensas.
                 </Text>
               </View>
             </View>
@@ -116,9 +120,9 @@ export default function SupportScreen() {
                 <Text style={styles.stepNumberText}>2</Text>
               </View>
               <View style={styles.stepContent}>
-                <Text style={styles.stepTitle}>Get Support</Text>
+                <Text style={styles.stepTitle}>Obtener apoyo</Text>
                 <Text style={styles.stepDescription}>
-                  Receive understanding responses and helpful resources
+                  Reciba respuestas comprensivas y recursos útiles
                 </Text>
               </View>
             </View>
@@ -128,9 +132,9 @@ export default function SupportScreen() {
                 <Text style={styles.stepNumberText}>3</Text>
               </View>
               <View style={styles.stepContent}>
-                <Text style={styles.stepTitle}>Find Help</Text>
+                <Text style={styles.stepTitle}>Encuentra ayuda</Text>
                 <Text style={styles.stepDescription}>
-                  Access professional resources when you need them
+                  Acceda a recursos profesionales cuando los necesite
                 </Text>
               </View>
             </View>
@@ -144,10 +148,10 @@ export default function SupportScreen() {
           }}
         >
           <Feather name="message-circle" size={20} color="#FFFFFF" />
-          <Text style={styles.helpButtonText}>Start Chatting</Text>
+          <Text style={styles.helpButtonText}>Empezar a chatear</Text>
         </TouchableOpacity>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -158,7 +162,10 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    paddingVertical: 24,
+    marginTop: Platform.OS == "android" ? 0 : 0,
+    paddingTop:
+      Platform.OS == "android" ? (StatusBar.currentHeight ?? 30) + 10 : 50,
+    paddingBottom: 15,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
   },

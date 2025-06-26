@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "CecyteBot",
+    "name": "Cecty Te Orienta",
     "slug": "CecyteBot",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/ImagenApp.jpg",
     "scheme": "cecytebot",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/ImagenApp.jpg",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
@@ -22,7 +22,7 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/ImagenApp.jpg"
     },
     "plugins": [
       "expo-router",

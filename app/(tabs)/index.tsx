@@ -2,6 +2,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Animated,
+  Keyboard,
   KeyboardAvoidingView,
   ScrollView,
   StatusBar,
@@ -9,7 +10,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View,Platform
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -31,7 +32,7 @@ export default function ChatScreen() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      text: "Hi there! I'm here to listen and support you. Whether you're dealing with bullying, feeling overwhelmed, or just need someone to talk to, I'm here for you. What's on your mind today?",
+      text: "¡Hola! Estoy aquí para escucharte y apoyarte. Ya sea que estés lidiando con el acoso escolar, te sientas abrumado o simplemente necesites hablar con alguien, estoy aquí para ti. ¿Qué tienes en mente hoy?",
       isUser: false,
       timestamp: new Date(),
     },
@@ -46,16 +47,24 @@ export default function ChatScreen() {
   );
 
   const supportResponses = [
-    "I hear you, and I want you to know that your feelings are completely valid. It takes courage to reach out, and I'm proud of you for taking this step.",
-    "Thank you for sharing that with me. What you're going through sounds really difficult, and it's okay to feel overwhelmed sometimes.",
-    "I'm really glad you felt comfortable talking to me about this. You're not alone in feeling this way, and there are people who want to help.",
-    "It sounds like you're dealing with a lot right now. Remember that it's okay to take things one day at a time, and seeking support shows real strength.",
-    "I can tell this is weighing heavily on you. Your safety and wellbeing matter, and there are resources and people who care about helping you through this.",
+    "Te escucho y quiero que sepas que tus sentimientos son completamente válidos. Se necesita valentía para pedir ayuda, y estoy orgulloso de ti por dar este paso.",
+    "Gracias por compartir eso conmigo. Lo que estás pasando parece muy difícil, y está bien sentirse abrumado a veces.",
+    "Me alegra mucho que te hayas sentido cómodo hablando conmigo sobre esto. No eres el único que se siente así, y hay gente dispuesta a ayudarte.",
+    "Parece que estás lidiando con muchas cosas ahora mismo. Recuerda que está bien ir día a día, y buscar apoyo demuestra verdadera fortaleza.",
+    "I know this is affecting you deeply. Your safety and well-being are important, and there are resources and people who care about helping you through this.",
   ];
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    const listener = Keyboard.addListener("keyboardDidShow", scrollToBottom);
+
+    return () => {
+      listener.remove();
+    };
+  }, []);
 
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -140,7 +149,7 @@ export default function ChatScreen() {
 
     // Reproducir nuevo mensaje
     Speech.speak(message.text, {
-      language: "en",
+      // language: "es",
       onStart: () => setCurrentSpeakingId(message.id),
       onDone: () => setCurrentSpeakingId(null),
       onStopped: () => setCurrentSpeakingId(null),
@@ -153,18 +162,14 @@ export default function ChatScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <KeyboardAvoidingView behavior={"padding"} style={styles.avoidcontainer}>
-        <StatusBar barStyle="light-content" backgroundColor="#F19433" />
-        {/* <LinearGradient colors={["#F19433", "#FFB347"]} style={styles.header}>
-          <Text style={styles.headerTitle}>Support Chat</Text>
-          <Text style={styles.headerSubtitle}>A safe space to talk</Text>
-        </LinearGradient> */}
-        <LinearGradient colors={["#F19433", "#FFB347"]} style={styles.header}>
+        <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true}/>
+        <LinearGradient colors={["#F19433", "#f7ad44"]} style={styles.header}>
           <View style={styles.headerContent}>
             <View>
-              <Text style={styles.headerTitle}>Support Chat</Text>
-              <Text style={styles.headerSubtitle}>A safe space to talk</Text>
+              <Text style={styles.headerTitle}>Chat de Apoyo</Text>
+              <Text style={styles.headerSubtitle}>Un espacio seguro para hablar</Text>
             </View>
             <TouchableOpacity
               onPress={handleSoundToggle}
@@ -200,7 +205,7 @@ export default function ChatScreen() {
         </ScrollView>
         <View style={styles.inputContainer}>
           <View style={styles.inputWrapper}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={handleSoundToggle}
               style={styles.soundButtonInput}
             >
@@ -209,12 +214,12 @@ export default function ChatScreen() {
                 size={20}
                 color={sound ? "#94A3B8" : "#94A3B8"}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TextInput
               style={styles.textInput}
               value={inputText}
               onChangeText={setInputText}
-              placeholder="Type your message here..."
+              placeholder="Escriba su mensaje aquí..."
               placeholderTextColor="#94A3B8"
               multiline
               maxLength={500}
@@ -240,7 +245,7 @@ export default function ChatScreen() {
           </View>
         </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -254,7 +259,9 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    paddingVertical: 24,
+    marginTop: Platform.OS=="android"? 0 : 0,
+    paddingTop: Platform.OS=="android"? (StatusBar.currentHeight ?? 30) + 10 : 50,
+    paddingBottom: 15,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
   },
@@ -298,6 +305,7 @@ const styles = StyleSheet.create({
     color: "#1E293B",
     maxHeight: 100,
     marginRight: 8,
+    height:"100%"
   },
   sendButton: {
     backgroundColor: "#4F46E5",
