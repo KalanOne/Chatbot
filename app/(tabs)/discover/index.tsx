@@ -141,7 +141,7 @@ export default function DiscoverScreen() {
         </TouchableOpacity>
 
         <View style={styles.topicsGrid}>
-          {topics.map((topic, index) => (
+          {topics.slice(1).map((topic, index) => (
             <TouchableOpacity
               key={topic.id}
               style={[
