@@ -1,4 +1,3 @@
-import { AxiosError } from "axios";
 import { AudioModule, RecordingPresets, useAudioRecorder } from "expo-audio";
 import * as Haptics from "expo-haptics";
 import mime from "mime";
@@ -123,14 +122,14 @@ function VoiceRecorder({ onTranscription, stopSpeaking }: VoiceRecorderProps) {
       const response = await getTextFromSpeech({ data: formData });
       onTranscription(response.transcription);
     } catch (error) {
-      let backendMessage = "No se pudo procesar el audio";
-      if (error instanceof AxiosError && error.response) {
-        if ("message" in error.response.data) {
-          backendMessage = error.response.data.message;
-        } else {
-          backendMessage = error.response.statusText;
-        }
-      }
+      let backendMessage = "No se pudo procesar el audio, intentelo más tarde";
+      // if (error instanceof AxiosError && error.response) {
+      //   if ("error" in error.response.data) {
+      //     backendMessage = error.response.data.error;
+      //   } else {
+      //     backendMessage = error.response.statusText;
+      //   }
+      // }
       Alert.alert("Error", backendMessage);
     } finally {
       setIsLoading(false);

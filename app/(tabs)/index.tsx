@@ -4,19 +4,21 @@ import {
   Animated,
   Keyboard,
   KeyboardAvoidingView,
+  Platform,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  View,Platform
+  View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
+import { getChatResponse } from "@/api/chat.api";
 import { ChatMessage } from "@/components/ChatMessage";
 import { TypingIndicator } from "@/components/TypingIndicator";
 import { VoiceRecorder } from "@/components/VoiceRecorder";
+import { generateUUIDv4 } from "@/utils/uuid";
 import Feather from "@expo/vector-icons/Feather";
 import { useFocusEffect } from "expo-router";
 import * as Speech from "expo-speech";
@@ -31,7 +33,7 @@ interface Message {
 export default function ChatScreen() {
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: "1",
+      id: generateUUIDv4(),
       text: "¡Hola! Estoy aquí para escucharte y apoyarte. Ya sea que estés lidiando con el acoso escolar, te sientas abrumado o simplemente necesites hablar con alguien, estoy aquí para ti. ¿Qué tienes en mente hoy?",
       isUser: false,
       timestamp: new Date(),
@@ -45,34 +47,15 @@ export default function ChatScreen() {
   const [currentSpeakingId, setCurrentSpeakingId] = useState<string | null>(
     null
   );
+  const [chat_id] = useState(generateUUIDv4());
 
-  const supportResponses = [
-    "Te escucho y quiero que sepas que tus sentimientos son completamente válidos. Se necesita valentía para pedir ayuda, y estoy orgulloso de ti por dar este paso.",
-    "Gracias por compartir eso conmigo. Lo que estás pasando parece muy difícil, y está bien sentirse abrumado a veces.",
-    "Me alegra mucho que te hayas sentido cómodo hablando conmigo sobre esto. No eres el único que se siente así, y hay gente dispuesta a ayudarte.",
-    "Parece que estás lidiando con muchas cosas ahora mismo. Recuerda que está bien ir día a día, y buscar apoyo demuestra verdadera fortaleza.",
-    "I know this is affecting you deeply. Your safety and well-being are important, and there are resources and people who care about helping you through this.",
-  ];
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  useEffect(() => {
-    const listener = Keyboard.addListener("keyboardDidShow", scrollToBottom);
-
-    return () => {
-      listener.remove();
-    };
-  }, []);
-
-  const scrollToBottom = () => {
+  function scrollToBottom() {
     setTimeout(() => {
       scrollViewRef.current?.scrollToEnd({ animated: true });
     }, 100);
-  };
+  }
 
-  const sendMessage = async (text: string) => {
+  async function sendMessage(text: string) {
     if (!text.trim()) return;
 
     const userMessage: Message = {
@@ -86,28 +69,37 @@ export default function ChatScreen() {
     setInputText("");
     setIsTyping(true);
 
-    // Simulate API response with typing delay
-    setTimeout(() => {
-      const randomResponse =
-        supportResponses[Math.floor(Math.random() * supportResponses.length)];
+    try {
+      const response = await getChatResponse({
+        chat_id,
+        mensaje: text,
+      });
       const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: randomResponse,
+        id: generateUUIDv4(),
+        text: response.respuesta,
         isUser: false,
         timestamp: new Date(),
       };
-
       setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      const botMessageError: Message = {
+        id: generateUUIDv4(),
+        text: "Lo siento 😢, ocurrió un error al procesar tu mensaje.",
+        isUser: false,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, botMessageError]);
+    } finally {
       setIsTyping(false);
-    }, 1500 + Math.random() * 1000);
-  };
+    }
+  }
 
-  const handleVoiceTranscription = (transcription: string) => {
+  function handleVoiceTranscription(transcription: string) {
     if (transcription) {
       // sendMessage(transcription);
       setInputText(transcription);
     }
-  };
+  }
 
   function handleSoundToggle() {
     setSound((prev) => {
@@ -139,6 +131,18 @@ export default function ChatScreen() {
     }, [])
   );
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
+    const listener = Keyboard.addListener("keyboardDidShow", scrollToBottom);
+
+    return () => {
+      listener.remove();
+    };
+  }, []);
+
   const handleSpeak = async (message: Message) => {
     if (!sound) return;
 
@@ -164,12 +168,18 @@ export default function ChatScreen() {
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView behavior={"padding"} style={styles.avoidcontainer}>
-        <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true}/>
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor="transparent"
+          translucent={true}
+        />
         <LinearGradient colors={["#F19433", "#f7ad44"]} style={styles.header}>
           <View style={styles.headerContent}>
             <View>
               <Text style={styles.headerTitle}>Chat de Apoyo</Text>
-              <Text style={styles.headerSubtitle}>Un espacio seguro para hablar</Text>
+              <Text style={styles.headerSubtitle}>
+                Un espacio seguro para hablar
+              </Text>
             </View>
             <TouchableOpacity
               onPress={handleSoundToggle}
@@ -259,8 +269,9 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    marginTop: Platform.OS=="android"? 0 : 0,
-    paddingTop: Platform.OS=="android"? (StatusBar.currentHeight ?? 30) + 10 : 50,
+    marginTop: Platform.OS == "android" ? 0 : 0,
+    paddingTop:
+      Platform.OS == "android" ? (StatusBar.currentHeight ?? 30) + 10 : 50,
     paddingBottom: 15,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
@@ -305,7 +316,7 @@ const styles = StyleSheet.create({
     color: "#1E293B",
     maxHeight: 100,
     marginRight: 8,
-    height:"100%"
+    height: "100%",
   },
   sendButton: {
     backgroundColor: "#4F46E5",
