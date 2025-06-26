@@ -24,46 +24,80 @@ interface Resource {
 export default function ResourcesScreen() {
   const resources: Resource[] = [
     {
-      title: "National Suicide Prevention Lifeline",
-      description: "24/7 free and confidential support for people in distress",
-      phone: "988",
-      icon: <Feather name="phone" size={24} color="#EF4444" />,
+      title: "Línea Nacional de Prevención del Suicidio",
+      description:
+        "Asistencia gratuita y confidencial las 24 horas, los 7 días de la semana, para personas en situación de necesidad.",
+      phone: "800 900 8432",
+      icon: <Feather name="phone" size={24} color="#F59E0B" />,
       category: "Apoyo en situaciones de crisis",
     },
     {
-      title: "Crisis Text Line",
-      description: "Text HOME to 741741 to reach a crisis counselor",
-      phone: "741741",
-      icon: <Feather name="message-square" size={24} color="#10B981" />,
+      title: "Asociación Mexicana de Suicidología, A.C.",
+      description: "Información acerca del suicidio y autoayuda",
+      url: "https://suicidologia.mx/necesitas-ayuda/",
+      icon: <Feather name="globe" size={24} color="#3B82F6" />,
       category: "Apoyo en situaciones de crisis",
     },
     {
-      title: "StopBullying.gov",
-      description: "Information and resources about bullying prevention",
-      url: "https://www.stopbullying.gov",
+      title: "SAPTEL",
+      description:
+        "El SAPTEL es un servicio de apoyo, consejo psicológico y de intervención en crisis",
+      phone: "55 52 59 81 21",
+      icon: <Feather name="phone" size={24} color="#F59E0B" />,
+      category: "Apoyo en situaciones de crisis",
+    },
+    {
+      title: "Saptel.org.mx",
+      description:
+        "El SAPTEL es un servicio de apoyo, consejo psicológico y de intervención en crisis",
+      url: "https://www.saptel.org.mx/",
+      icon: <Feather name="globe" size={24} color="#3B82F6" />,
+      category: "Apoyo en situaciones de crisis",
+    },
+    {
+      title: "Escuelalibredeviolencia.sep.gob.mx",
+      description:
+        "Información y recursos sobre la prevención del acoso escolar",
+      url: "https://escuelalibredeviolencia.sep.gob.mx/",
       icon: <Feather name="globe" size={24} color="#3B82F6" />,
       category: "Bullying",
     },
     {
-      title: "National Sexual Assault Hotline",
-      description: "24/7 confidential support for survivors",
-      phone: "1-800-656-4673",
-      icon: <Feather name="phone" size={24} color="#8B5CF6" />,
+      title: "Línea Sin Violencia",
+      description:
+        "Se proporciona asesoría jurídica y atención psicológica a mujeres en situación de violencia de género",
+      phone: "800 10 84 053",
+      icon: <Feather name="phone" size={24} color="#F59E0B" />,
+      category: "Salud sexual",
+    },
+    {
+      title: "Línea Sin Violencia",
+      description:
+        "Se proporciona asesoría jurídica y atención psicológica a mujeres en situación de violencia de género",
+      url: "https://semujeres.edomex.gob.mx/linea_atencion_por_violencia",
+      icon: <Feather name="globe" size={24} color="#3B82F6" />,
       category: "Salud sexual",
     },
     {
       title: "Planned Parenthood",
-      description: "Sexual health information and services",
-      url: "https://www.plannedparenthood.org",
-      icon: <Feather name="globe" size={24} color="#EC4899" />,
+      description: "Información y servicios de salud sexual",
+      url: "https://www.plannedparenthood.org/es",
+      icon: <Feather name="globe" size={24} color="#3B82F6" />,
       category: "Salud sexual",
     },
+    // {
+    //   title: "Teen Line",
+    //   description: "Teens helping teens through difficult times",
+    //   phone: "1-800-852-8336",
+    //   icon: <Feather name="phone" size={24} color="#F59E0B" />,
+    //   category: "Apoyo de compañeros",
+    // },
     {
-      title: "Teen Line",
-      description: "Teens helping teens through difficult times",
-      phone: "1-800-852-8336",
-      icon: <Feather name="phone" size={24} color="#F59E0B" />,
-      category: "Apoyo de compañeros",
+      title: "Cecyteorienta.com",
+      description: "Un sitio web para informarte acerca de diversos temas",
+      url: "https://www.cecyteorienta.com/",
+      icon: <Feather name="globe" size={24} color="#3B82F6" />,
+      category: "Cecy",
     },
   ];
 
