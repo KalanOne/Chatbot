@@ -16,7 +16,7 @@ const apisUrls = {
     process.env.EXPO_PUBLIC_API_TRANSLATE_URL ??
     "https://82407.pythonanywhere.com",
   chatApi:
-    process.env.EXPO_PUBLIC_API_TRANSLATE_URL ?? "http://172.16.165.158:5000",
+    process.env.EXPO_PUBLIC_API_CHAT_URL ?? "https://cecyapi-2h4u.onrender.com",
 };
 
 interface HttpArguments {
@@ -61,9 +61,6 @@ async function http<T>({
   data,
   params = {},
   dataWithFiles = false,
-  responseType = "json",
-  extraHeaders = {},
-  transformRequest,
   baseURL = "translateApi",
 }: HttpArguments): Promise<T> {
   let jwt;
@@ -98,10 +95,7 @@ async function http<T>({
       "Content-Type": dataWithFiles
         ? "multipart/form-data"
         : "application/json",
-      ...extraHeaders,
     },
-    responseType: responseType,
-    transformRequest,
   };
 
   let response: AxiosResponse<T, T>;
