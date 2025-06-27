@@ -5,6 +5,7 @@ import {
   Text,
   Dimensions,
   Image,
+  ScrollView,
 } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -164,68 +165,77 @@ function CecyVisualMode({
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView 
+      style={styles.container}
+      contentContainerStyle={styles.scrollContent}
+      showsVerticalScrollIndicator={false}
+      bounces={false}
+    >
       {/* Background gradient effect */}
       <View style={[styles.backgroundGlow, { backgroundColor: getStateColor() }]} />
       
-      {/* Main Cecy container */}
-      <View style={styles.cecyMainContainer}>
-        {/* Glow effect */}
-        <Animated.View style={[styles.glowEffect, glowStyle]}>
-          <View style={[styles.glowCircle, { backgroundColor: getStateColor() }]} />
-        </Animated.View>
-
-        {/* Cecy image container */}
-        <Animated.View style={[styles.cecyContainer, cecyContainerStyle]}>
-          <View style={styles.cecyImageWrapper}>
-            <Image
-              source={require("@/assets/images/CecyApp.jpg")}
-              style={styles.cecyImage}
-              resizeMode="cover"
-            />
-            
-            {/* State indicator ring */}
-            <View style={[styles.stateRing, { borderColor: getStateColor() }]} />
-          </View>
-        </Animated.View>
-
-        {/* Thought bubble for thinking state */}
-        <Animated.View style={[styles.thoughtBubble, thoughtBubbleStyle]}>
-          <View style={styles.thoughtBubbleContent}>
-            <View style={styles.thinkingDots}>
-              <ThinkingDot delay={0} />
-              <ThinkingDot delay={200} />
-              <ThinkingDot delay={400} />
-            </View>
-          </View>
-          <View style={styles.thoughtBubbleTail} />
-        </Animated.View>
-      </View>
-
-      {/* State information */}
-      <View style={styles.stateInfo}>
-        <View style={[styles.stateIndicator, { backgroundColor: getStateColor() }]} />
-        <Text style={[styles.stateText, { color: getStateColor() }]}>
-          {getStateMessage()}
-        </Text>
-      </View>
-
-      {/* Current message display (when speaking) */}
-      {cecyState === "speaking" && currentMessage && (
-        <View style={styles.messageDisplay}>
-          <Text style={styles.messageText} numberOfLines={3}>
-            "{currentMessage}"
-          </Text>
-        </View>
-      )}
-
       {/* Decorative elements */}
       <View style={styles.decorativeElements}>
-        <FloatingParticle delay={0} color="#53AB32" />
-        <FloatingParticle delay={1000} color="#F19433" />
-        <FloatingParticle delay={2000} color="#45AAE3" />
+        <FloatingParticle delay={0} color="#53AB32" position={{ top: "15%", left: "10%" }} />
+        <FloatingParticle delay={1000} color="#F19433" position={{ top: "25%", right: "15%" }} />
+        <FloatingParticle delay={2000} color="#45AAE3" position={{ top: "35%", left: "20%" }} />
+        <FloatingParticle delay={1500} color="#E74889" position={{ top: "45%", right: "25%" }} />
       </View>
-    </View>
+
+      {/* Main content container */}
+      <View style={styles.mainContent}>
+        {/* Main Cecy container */}
+        <View style={styles.cecyMainContainer}>
+          {/* Glow effect */}
+          <Animated.View style={[styles.glowEffect, glowStyle]}>
+            <View style={[styles.glowCircle, { backgroundColor: getStateColor() }]} />
+          </Animated.View>
+
+          {/* Cecy image container */}
+          <Animated.View style={[styles.cecyContainer, cecyContainerStyle]}>
+            <View style={styles.cecyImageWrapper}>
+              <Image
+                source={require("@/assets/images/CecyApp.jpg")}
+                style={styles.cecyImage}
+                resizeMode="cover"
+              />
+              
+              {/* State indicator ring */}
+              <View style={[styles.stateRing, { borderColor: getStateColor() }]} />
+            </View>
+          </Animated.View>
+
+          {/* Thought bubble for thinking state */}
+          <Animated.View style={[styles.thoughtBubble, thoughtBubbleStyle]}>
+            <View style={styles.thoughtBubbleContent}>
+              <View style={styles.thinkingDots}>
+                <ThinkingDot delay={0} />
+                <ThinkingDot delay={200} />
+                <ThinkingDot delay={400} />
+              </View>
+            </View>
+            <View style={styles.thoughtBubbleTail} />
+          </Animated.View>
+        </View>
+
+        {/* State information */}
+        <View style={styles.stateInfo}>
+          <View style={[styles.stateIndicator, { backgroundColor: getStateColor() }]} />
+          <Text style={[styles.stateText, { color: getStateColor() }]}>
+            {getStateMessage()}
+          </Text>
+        </View>
+
+        {/* Current message display (when speaking) */}
+        {cecyState === "speaking" && currentMessage && (
+          <View style={styles.messageDisplay}>
+            <Text style={styles.messageText} numberOfLines={4}>
+              "{currentMessage}"
+            </Text>
+          </View>
+        )}
+      </View>
+    </ScrollView>
   );
 }
 
@@ -252,15 +262,23 @@ function ThinkingDot({ delay }: { delay: number }) {
 }
 
 // Floating particle component
-function FloatingParticle({ delay, color }: { delay: number; color: string }) {
+function FloatingParticle({ 
+  delay, 
+  color, 
+  position 
+}: { 
+  delay: number; 
+  color: string; 
+  position: { top?: string; left?: string; right?: string; bottom?: string };
+}) {
   const translateY = useSharedValue(0);
   const opacity = useSharedValue(0.6);
 
   useEffect(() => {
     translateY.value = withRepeat(
       withSequence(
-        withTiming(-20, { duration: 3000 }),
-        withTiming(20, { duration: 3000 })
+        withTiming(-15, { duration: 3000 }),
+        withTiming(15, { duration: 3000 })
       ),
       -1,
       true
@@ -282,7 +300,14 @@ function FloatingParticle({ delay, color }: { delay: number; color: string }) {
   }));
 
   return (
-    <Animated.View style={[styles.particle, animatedStyle, { backgroundColor: color }]} />
+    <Animated.View 
+      style={[
+        styles.particle, 
+        animatedStyle, 
+        { backgroundColor: color },
+        position
+      ]} 
+    />
   );
 }
 
@@ -290,9 +315,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F8FAFC",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
+  },
+  scrollContent: {
+    flexGrow: 1,
+    minHeight: height * 0.7, // Asegura altura mínima
   },
   backgroundGlow: {
     position: "absolute",
@@ -302,10 +328,19 @@ const styles = StyleSheet.create({
     bottom: 0,
     opacity: 0.05,
   },
+  mainContent: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+    minHeight: height * 0.6,
+  },
   cecyMainContainer: {
     alignItems: "center",
     justifyContent: "center",
     position: "relative",
+    marginBottom: 30,
   },
   glowEffect: {
     position: "absolute",
@@ -313,9 +348,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   glowCircle: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
+    width: 180,
+    height: 180,
+    borderRadius: 90,
     opacity: 0.2,
   },
   cecyContainer: {
@@ -329,30 +364,30 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   cecyImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
+    width: 130,
+    height: 130,
+    borderRadius: 65,
     borderWidth: 4,
     borderColor: "#FFFFFF",
   },
   stateRing: {
     position: "absolute",
-    width: 170,
-    height: 170,
-    borderRadius: 85,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
     borderWidth: 3,
     borderStyle: "dashed",
   },
   thoughtBubble: {
     position: "absolute",
-    top: -80,
-    right: -60,
+    top: -70,
+    right: -50,
     zIndex: 3,
   },
   thoughtBubbleContent: {
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
-    padding: 16,
+    padding: 12,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -365,12 +400,12 @@ const styles = StyleSheet.create({
   thoughtBubbleTail: {
     position: "absolute",
     bottom: -8,
-    left: 20,
+    left: 15,
     width: 0,
     height: 0,
-    borderLeftWidth: 10,
-    borderRightWidth: 10,
-    borderTopWidth: 15,
+    borderLeftWidth: 8,
+    borderRightWidth: 8,
+    borderTopWidth: 12,
     borderLeftColor: "transparent",
     borderRightColor: "transparent",
     borderTopColor: "#FFFFFF",
@@ -380,16 +415,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   thinkingDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
     backgroundColor: "#94A3B8",
-    marginHorizontal: 3,
+    marginHorizontal: 2,
   },
   stateInfo: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 40,
     paddingHorizontal: 20,
     paddingVertical: 12,
     backgroundColor: "#FFFFFF",
@@ -402,25 +436,24 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 3,
+    marginBottom: 20,
   },
   stateIndicator: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    marginRight: 10,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginRight: 8,
   },
   stateText: {
     fontSize: 16,
     fontWeight: "600",
   },
   messageDisplay: {
-    position: "absolute",
-    bottom: 100,
-    left: 20,
-    right: 20,
     backgroundColor: "#FFFFFF",
     borderRadius: 16,
     padding: 20,
+    marginHorizontal: 20,
+    maxWidth: width - 40,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -431,9 +464,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   messageText: {
-    fontSize: 16,
+    fontSize: 15,
     color: "#1E293B",
-    lineHeight: 24,
+    lineHeight: 22,
     textAlign: "center",
     fontStyle: "italic",
   },
@@ -447,10 +480,8 @@ const styles = StyleSheet.create({
   },
   particle: {
     position: "absolute",
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    top: "20%",
-    left: "15%",
+    width: 5,
+    height: 5,
+    borderRadius: 2.5,
   },
 });
