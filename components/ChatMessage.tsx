@@ -130,7 +130,12 @@ function ChatMessage({
               {showTyping && <Text style={styles.cursor}>|</Text>}
             </Text>
           </View>
-          {message.isUser && <AntDesign name="user" size={30} color="black" />}
+          {message.isUser && (
+            <Image
+              source={require("@/assets/images/OzzyFeliz2.jpg")}
+              style={{ width: 30, height: 30, borderRadius: 12 }}
+            />
+          )}
         </View>
         <View style={styles.timeStampReproducerContainer}>
           {!message.isUser && sound && (
