@@ -80,7 +80,7 @@ function CecyVisualMode({
               const availableHeight = Dimensions.get("window").height - keyboardHeight;
               const cecyCenter = y + height / 2;
               const targetCenter = availableHeight / 2;
-              const scrollOffset = cecyCenter - targetCenter + 30;
+              const scrollOffset = cecyCenter - targetCenter + 300;
               
               scrollViewRef.current?.scrollTo({
                 y: Math.max(0, scrollOffset),
