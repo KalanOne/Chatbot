@@ -32,7 +32,7 @@ export default function TabLayout() {
           tabBarIcon: ({ size, color }) => {
             return <Feather name="message-circle" size={size} color={color} />;
           },
-          freezeOnBlur: true,
+          // freezeOnBlur: true,
         }}
         listeners={{
           focus: () => {
@@ -47,7 +47,7 @@ export default function TabLayout() {
           tabBarIcon: ({ size, color }) => {
             return <Feather name="book-open" size={size} color={color} />;
           },
-          freezeOnBlur: true,
+          // freezeOnBlur: true,
         }}
         listeners={{
           focus: () => {
@@ -62,7 +62,7 @@ export default function TabLayout() {
           tabBarIcon: ({ size, color }) => (
             <AntDesign name="hearto" size={size} color={color} />
           ),
-          freezeOnBlur: true,
+          // freezeOnBlur: true,
         }}
         listeners={{
           focus: () => {
@@ -77,7 +77,7 @@ export default function TabLayout() {
           tabBarIcon: ({ size, color }) => (
             <Feather name="compass" size={size} color={color} />
           ),
-          freezeOnBlur: true,
+          // freezeOnBlur: true,
         }}
         listeners={{
           focus: () => {
