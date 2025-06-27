@@ -1,11 +1,9 @@
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   Animated,
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -15,19 +13,18 @@ import {
 } from "react-native";
 
 import { getChatResponse } from "@/api/chat.api";
-import { ChatMessage } from "@/components/ChatMessage";
-import { TypingIndicator } from "@/components/TypingIndicator";
+import { ChatMode } from "@/components/ChatMode";
 import { VoiceRecorder } from "@/components/VoiceRecorder";
 import { generateUUIDv4 } from "@/utils/uuid";
 import Feather from "@expo/vector-icons/Feather";
 import { useFocusEffect } from "expo-router";
 import * as Speech from "expo-speech";
-
-interface Message {
+export interface Message {
   id: string;
   text: string;
   isUser: boolean;
   timestamp: Date;
+  written: boolean;
 }
 
 export default function ChatScreen() {
@@ -37,23 +34,18 @@ export default function ChatScreen() {
       text: "¡Hola! Estoy aquí para escucharte y apoyarte. Ya sea que estés lidiando con el acoso escolar, te sientas abrumado o simplemente necesites hablar con alguien, estoy aquí para ti. ¿Qué tienes en mente hoy?",
       isUser: false,
       timestamp: new Date(),
+      written: false,
     },
   ]);
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [sound, setSound] = useState(true);
-  const scrollViewRef = useRef<ScrollView>(null);
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const [currentSpeakingId, setCurrentSpeakingId] = useState<string | null>(
     null
   );
   const [chat_id] = useState(generateUUIDv4());
-
-  function scrollToBottom() {
-    setTimeout(() => {
-      scrollViewRef.current?.scrollToEnd({ animated: true });
-    }, 100);
-  }
+  const [chatMode, setChatMode] = useState(true);
 
   async function sendMessage(text: string) {
     if (!text.trim()) return;
@@ -63,6 +55,7 @@ export default function ChatScreen() {
       text: text.trim(),
       isUser: true,
       timestamp: new Date(),
+      written: true,
     };
 
     setMessages((prev) => [...prev, userMessage]);
@@ -79,6 +72,7 @@ export default function ChatScreen() {
         text: response.respuesta,
         isUser: false,
         timestamp: new Date(),
+        written: !chatMode,
       };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
@@ -87,6 +81,7 @@ export default function ChatScreen() {
         text: "Lo siento 😢, ocurrió un error al procesar tu mensaje.",
         isUser: false,
         timestamp: new Date(),
+        written: !chatMode,
       };
       setMessages((prev) => [...prev, botMessageError]);
     } finally {
@@ -123,6 +118,14 @@ export default function ChatScreen() {
     ]).start();
   }
 
+  function handleFinishedWritten(index: number) {
+    setMessages((prevMessages) => {
+      const updated = [...prevMessages];
+      updated[index] = { ...updated[index], written: true };
+      return updated;
+    });
+  }
+
   useFocusEffect(
     useCallback(() => {
       return () => {
@@ -131,39 +134,25 @@ export default function ChatScreen() {
     }, [])
   );
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  useEffect(() => {
-    const listener = Keyboard.addListener("keyboardDidShow", scrollToBottom);
-
-    return () => {
-      listener.remove();
-    };
-  }, []);
-
-  const handleSpeak = async (message: Message) => {
+  async function handleSpeak(message: Message) {
     if (!sound) return;
 
-    // Detener reproducción anterior si existe
     if (currentSpeakingId) {
       await Speech.stop();
     }
 
-    // Reproducir nuevo mensaje
     Speech.speak(message.text, {
       // language: "es",
       onStart: () => setCurrentSpeakingId(message.id),
       onDone: () => setCurrentSpeakingId(null),
       onStopped: () => setCurrentSpeakingId(null),
     });
-  };
+  }
 
-  const handleStopSpeaking = async () => {
+  async function handleStopSpeaking() {
     await Speech.stop();
     setCurrentSpeakingId(null);
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -195,24 +184,19 @@ export default function ChatScreen() {
             </TouchableOpacity>
           </View>
         </LinearGradient>
-        <ScrollView
-          ref={scrollViewRef}
-          style={styles.messagesContainer}
-          contentContainerStyle={styles.messagesContent}
-          showsVerticalScrollIndicator={false}
-        >
-          {messages.map((message) => (
-            <ChatMessage
-              key={message.id}
-              message={message}
-              sound={sound}
-              isSpeaking={currentSpeakingId === message.id}
-              onSpeak={() => handleSpeak(message)}
-              onStop={handleStopSpeaking}
-            />
-          ))}
-          {isTyping && <TypingIndicator />}
-        </ScrollView>
+        {chatMode ? (
+          <ChatMode
+            messages={messages}
+            isTyping={isTyping}
+            sound={sound}
+            currentSpeakingId={currentSpeakingId}
+            handleSpeak={handleSpeak}
+            handleStopSpeaking={handleStopSpeaking}
+            handleFinishedWritten={handleFinishedWritten}
+          />
+        ) : (
+          <></>
+        )}
         <View style={styles.inputContainer}>
           <View style={styles.inputWrapper}>
             {/* <TouchableOpacity
