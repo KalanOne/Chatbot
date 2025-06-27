@@ -14,11 +14,14 @@ import {
 
 import { getChatResponse } from "@/api/chat.api";
 import { ChatMode } from "@/components/ChatMode";
+import { CecyVisualMode } from "@/components/CecyVisualMode";
 import { VoiceRecorder } from "@/components/VoiceRecorder";
 import { generateUUIDv4 } from "@/utils/uuid";
 import Feather from "@expo/vector-icons/Feather";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useFocusEffect } from "expo-router";
 import * as Speech from "expo-speech";
+
 export interface Message {
   id: string;
   text: string;
@@ -40,12 +43,14 @@ export default function ChatScreen() {
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [sound, setSound] = useState(true);
+  const [chatMode, setChatMode] = useState(true);
+  const [isUserTyping, setIsUserTyping] = useState(false);
   const scaleAnim = useRef(new Animated.Value(1)).current;
+  const modeScaleAnim = useRef(new Animated.Value(1)).current;
   const [currentSpeakingId, setCurrentSpeakingId] = useState<string | null>(
     null
   );
   const [chat_id] = useState(generateUUIDv4());
-  const [chatMode, setChatMode] = useState(true);
 
   async function sendMessage(text: string) {
     if (!text.trim()) return;
@@ -61,6 +66,7 @@ export default function ChatScreen() {
     setMessages((prev) => [...prev, userMessage]);
     setInputText("");
     setIsTyping(true);
+    setIsUserTyping(false);
 
     try {
       const response = await getChatResponse({
@@ -75,7 +81,9 @@ export default function ChatScreen() {
         written: !chatMode,
       };
       setMessages((prev) => [...prev, botMessage]);
-      if (!chatMode) {
+      
+      // Auto-play audio in visual mode
+      if (!chatMode && sound) {
         await handleSpeak(botMessage);
       }
     } catch (error) {
@@ -87,6 +95,11 @@ export default function ChatScreen() {
         written: !chatMode,
       };
       setMessages((prev) => [...prev, botMessageError]);
+      
+      // Auto-play error message in visual mode
+      if (!chatMode && sound) {
+        await handleSpeak(botMessageError);
+      }
     } finally {
       setIsTyping(false);
     }
@@ -94,7 +107,6 @@ export default function ChatScreen() {
 
   function handleVoiceTranscription(transcription: string) {
     if (transcription) {
-      // sendMessage(transcription);
       setInputText(transcription);
     }
   }
@@ -121,12 +133,41 @@ export default function ChatScreen() {
     ]).start();
   }
 
+  function handleModeToggle() {
+    setChatMode((prev) => {
+      const newMode = !prev;
+      // Enable sound automatically when switching to visual mode
+      if (!newMode && !sound) {
+        setSound(true);
+      }
+      return newMode;
+    });
+
+    Animated.sequence([
+      Animated.timing(modeScaleAnim, {
+        toValue: 0.8,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+      Animated.timing(modeScaleAnim, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }
+
   function handleFinishedWritten(index: number) {
     setMessages((prevMessages) => {
       const updated = [...prevMessages];
       updated[index] = { ...updated[index], written: true };
       return updated;
     });
+  }
+
+  function handleInputChange(text: string) {
+    setInputText(text);
+    setIsUserTyping(text.length > 0);
   }
 
   useFocusEffect(
@@ -145,7 +186,6 @@ export default function ChatScreen() {
     }
 
     Speech.speak(message.text, {
-      // language: "es",
       onStart: () => setCurrentSpeakingId(message.id),
       onDone: () => setCurrentSpeakingId(null),
       onStopped: () => setCurrentSpeakingId(null),
@@ -168,25 +208,45 @@ export default function ChatScreen() {
         <LinearGradient colors={["#F19433", "#f7ad44"]} style={styles.header}>
           <View style={styles.headerContent}>
             <View>
-              <Text style={styles.headerTitle}>Chat de Apoyo</Text>
+              <Text style={styles.headerTitle}>
+                {chatMode ? "Chat de Apoyo" : "Cecy Visual"}
+              </Text>
               <Text style={styles.headerSubtitle}>
-                Un espacio seguro para hablar
+                {chatMode 
+                  ? "Un espacio seguro para hablar" 
+                  : "Interacción visual con Cecy"
+                }
               </Text>
             </View>
-            <TouchableOpacity
-              onPress={handleSoundToggle}
-              style={styles.soundButton}
-            >
-              <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-                <Feather
-                  name={sound ? "volume-2" : "volume-x"}
-                  size={24}
-                  color="#FFF"
-                />
-              </Animated.View>
-            </TouchableOpacity>
+            <View style={styles.headerButtons}>
+              <TouchableOpacity
+                onPress={handleModeToggle}
+                style={styles.modeButton}
+              >
+                <Animated.View style={{ transform: [{ scale: modeScaleAnim }] }}>
+                  <MaterialIcons
+                    name={chatMode ? "visibility" : "chat"}
+                    size={24}
+                    color="#FFF"
+                  />
+                </Animated.View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleSoundToggle}
+                style={styles.soundButton}
+              >
+                <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+                  <Feather
+                    name={sound ? "volume-2" : "volume-x"}
+                    size={24}
+                    color="#FFF"
+                  />
+                </Animated.View>
+              </TouchableOpacity>
+            </View>
           </View>
         </LinearGradient>
+
         {chatMode ? (
           <ChatMode
             messages={messages}
@@ -198,24 +258,20 @@ export default function ChatScreen() {
             handleFinishedWritten={handleFinishedWritten}
           />
         ) : (
-          <></>
+          <CecyVisualMode
+            messages={messages}
+            isTyping={isTyping}
+            currentSpeakingId={currentSpeakingId}
+            isUserTyping={isUserTyping}
+          />
         )}
+
         <View style={styles.inputContainer}>
           <View style={styles.inputWrapper}>
-            {/* <TouchableOpacity
-              onPress={handleSoundToggle}
-              style={styles.soundButtonInput}
-            >
-              <Feather
-                name={sound ? "volume-2" : "volume-x"}
-                size={20}
-                color={sound ? "#94A3B8" : "#94A3B8"}
-              />
-            </TouchableOpacity> */}
             <TextInput
               style={styles.textInput}
               value={inputText}
-              onChangeText={setInputText}
+              onChangeText={handleInputChange}
               placeholder="Escriba su mensaje aquí..."
               placeholderTextColor="#94A3B8"
               multiline
@@ -274,13 +330,6 @@ const styles = StyleSheet.create({
     color: "#E2E8F0",
     opacity: 0.9,
   },
-  messagesContainer: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-  messagesContent: {
-    paddingVertical: 20,
-  },
   inputContainer: {
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -317,20 +366,24 @@ const styles = StyleSheet.create({
   sendButtonDisabled: {
     backgroundColor: "#E2E8F0",
   },
-  ////
   headerContent: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  soundButton: {
+  headerButtons: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  modeButton: {
     padding: 8,
     borderRadius: 20,
     backgroundColor: "rgba(255, 255, 255, 0.2)",
   },
-  soundButtonInput: {
+  soundButton: {
     padding: 8,
-    marginRight: 8,
-    alignSelf: "center",
+    borderRadius: 20,
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
   },
 });
