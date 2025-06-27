@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    minHeight: height * 0.7, // Asegura altura mínima
+    minHeight: height * 0.6, // Asegura altura mínima
   },
   backgroundGlow: {
     position: "absolute",
