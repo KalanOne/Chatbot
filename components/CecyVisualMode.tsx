@@ -78,7 +78,7 @@ function CecyVisualMode({
           if (cecyContainerRef.current && scrollViewRef.current) {
             cecyContainerRef.current.measureInWindow((x, y, width, height) => {
               const availableHeight = Dimensions.get("window").height - keyboardHeight;
-              const cecyCenter =  y + height / 2;
+              const cecyCenter = y + height / 2;
               const targetCenter = availableHeight / 2;
               const scrollOffset = cecyCenter - targetCenter;
               
