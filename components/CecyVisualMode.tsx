@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  Keyboard,
 } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -38,6 +39,8 @@ function CecyVisualMode({
 }: CecyVisualModeProps) {
   const [cecyState, setCecyState] = useState<CecyState>("waiting");
   const [currentMessage, setCurrentMessage] = useState<string>("");
+  const scrollViewRef = useRef<ScrollView>(null);
+  const cecyContainerRef = useRef<View>(null);
 
   // Animation values
   const floatAnimation = useSharedValue(0);
@@ -62,6 +65,51 @@ function CecyVisualMode({
       setCecyState("waiting");
     }
   }, [isTyping, currentSpeakingId, isUserTyping, messages]);
+
+  // Handle keyboard events to center Cecy
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      (event) => {
+        const keyboardHeight = event.endCoordinates.height;
+        
+        // Calculate the position to center Cecy considering the keyboard
+        setTimeout(() => {
+          if (cecyContainerRef.current && scrollViewRef.current) {
+            cecyContainerRef.current.measureInWindow((x, y, width, height) => {
+              const availableHeight = Dimensions.get("window").height - keyboardHeight;
+              const cecyCenter = y + height / 2;
+              const targetCenter = availableHeight / 2;
+              const scrollOffset = cecyCenter - targetCenter;
+              
+              scrollViewRef.current?.scrollTo({
+                y: Math.max(0, scrollOffset),
+                animated: true,
+              });
+            });
+          }
+        }, 100);
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        // Optionally scroll back to a default position when keyboard hides
+        setTimeout(() => {
+          scrollViewRef.current?.scrollTo({
+            y: 0,
+            animated: true,
+          });
+        }, 100);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   // Start animations based on state
   useEffect(() => {
@@ -166,10 +214,12 @@ function CecyVisualMode({
 
   return (
     <ScrollView 
+      ref={scrollViewRef}
       style={styles.container}
       contentContainerStyle={styles.scrollContent}
       showsVerticalScrollIndicator={false}
       bounces={false}
+      keyboardShouldPersistTaps="handled"
     >
       {/* Background gradient effect */}
       <View style={[styles.backgroundGlow, { backgroundColor: getStateColor() }]} />
@@ -184,8 +234,11 @@ function CecyVisualMode({
 
       {/* Main content container */}
       <View style={styles.mainContent}>
-        {/* Main Cecy container */}
-        <View style={styles.cecyMainContainer}>
+        {/* Main Cecy container with ref for measuring */}
+        <View 
+          ref={cecyContainerRef}
+          style={styles.cecyMainContainer}
+        >
           {/* Glow effect */}
           <Animated.View style={[styles.glowEffect, glowStyle]}>
             <View style={[styles.glowCircle, { backgroundColor: getStateColor() }]} />
@@ -318,7 +371,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    minHeight: height * 0.6, // Asegura altura mínima
+    minHeight: height * 0.8, // Aumentado para dar más espacio de scroll
   },
   backgroundGlow: {
     position: "absolute",
@@ -332,9 +385,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 40,
+    paddingVertical: 60, // Aumentado para mejor centrado
     paddingHorizontal: 20,
-    minHeight: height * 0.6,
+    minHeight: height * 0.8,
   },
   cecyMainContainer: {
     alignItems: "center",
