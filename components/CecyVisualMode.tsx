@@ -1,22 +1,23 @@
-import React, { useEffect, useState, useRef } from "react";
+import { Message } from "@/app/(tabs)";
+import React, { useEffect, useRef, useState } from "react";
 import {
-  View,
+  Dimensions,
+  DimensionValue,
+  Image,
+  Keyboard,
+  ScrollView,
   StyleSheet,
   Text,
-  Dimensions,
-  Image,
-  ScrollView,
-  Keyboard,
+  View,
 } from "react-native";
 import Animated, {
+  interpolate,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
-  withTiming,
   withSequence,
-  interpolate,
+  withTiming,
 } from "react-native-reanimated";
-import { Message } from "@/app/(tabs)";
 
 export { CecyVisualMode };
 
@@ -55,7 +56,7 @@ function CecyVisualMode({
     } else if (currentSpeakingId) {
       setCecyState("speaking");
       // Get the current speaking message
-      const speakingMessage = messages.find(m => m.id === currentSpeakingId);
+      const speakingMessage = messages.find((m) => m.id === currentSpeakingId);
       if (speakingMessage) {
         setCurrentMessage(speakingMessage.text);
       }
@@ -72,16 +73,17 @@ function CecyVisualMode({
       "keyboardDidShow",
       (event) => {
         const keyboardHeight = event.endCoordinates.height;
-        
+
         // Calculate the position to center Cecy considering the keyboard
         setTimeout(() => {
           if (cecyContainerRef.current && scrollViewRef.current) {
             cecyContainerRef.current.measureInWindow((x, y, width, height) => {
-              const availableHeight = Dimensions.get("window").height - keyboardHeight;
+              const availableHeight =
+                Dimensions.get("window").height - keyboardHeight;
               const cecyCenter = y + height / 2;
               const targetCenter = availableHeight / 2;
               const scrollOffset = cecyCenter - targetCenter + 50;
-              
+
               scrollViewRef.current?.scrollTo({
                 y: Math.max(0, scrollOffset),
                 animated: true,
@@ -176,9 +178,7 @@ function CecyVisualMode({
 
   const glowStyle = useAnimatedStyle(() => ({
     opacity: interpolate(glowAnimation.value, [0, 1], [0.3, 0.8]),
-    transform: [
-      { scale: interpolate(glowAnimation.value, [0, 1], [1, 1.2]) },
-    ],
+    transform: [{ scale: interpolate(glowAnimation.value, [0, 1], [1, 1.2]) }],
   }));
 
   const thoughtBubbleStyle = useAnimatedStyle(() => ({
@@ -213,7 +213,7 @@ function CecyVisualMode({
   };
 
   return (
-    <ScrollView 
+    <ScrollView
       ref={scrollViewRef}
       style={styles.container}
       contentContainerStyle={styles.scrollContent}
@@ -222,26 +222,43 @@ function CecyVisualMode({
       keyboardShouldPersistTaps="handled"
     >
       {/* Background gradient effect */}
-      <View style={[styles.backgroundGlow, { backgroundColor: getStateColor() }]} />
-      
+      <View
+        style={[styles.backgroundGlow, { backgroundColor: getStateColor() }]}
+      />
+
       {/* Decorative elements */}
       <View style={styles.decorativeElements}>
-        <FloatingParticle delay={0} color="#53AB32" position={{ top: "15%", left: "10%" }} />
-        <FloatingParticle delay={1000} color="#F19433" position={{ top: "25%", right: "15%" }} />
-        <FloatingParticle delay={2000} color="#45AAE3" position={{ top: "35%", left: "20%" }} />
-        <FloatingParticle delay={1500} color="#E74889" position={{ top: "45%", right: "25%" }} />
+        <FloatingParticle
+          delay={0}
+          color="#53AB32"
+          position={{ top: "15%", left: "10%" }}
+        />
+        <FloatingParticle
+          delay={1000}
+          color="#F19433"
+          position={{ top: "25%", right: "15%" }}
+        />
+        <FloatingParticle
+          delay={2000}
+          color="#45AAE3"
+          position={{ top: "35%", left: "20%" }}
+        />
+        <FloatingParticle
+          delay={1500}
+          color="#E74889"
+          position={{ top: "45%", right: "25%" }}
+        />
       </View>
 
       {/* Main content container */}
       <View style={styles.mainContent}>
         {/* Main Cecy container with ref for measuring */}
-        <View 
-          ref={cecyContainerRef}
-          style={styles.cecyMainContainer}
-        >
+        <View ref={cecyContainerRef} style={styles.cecyMainContainer}>
           {/* Glow effect */}
           <Animated.View style={[styles.glowEffect, glowStyle]}>
-            <View style={[styles.glowCircle, { backgroundColor: getStateColor() }]} />
+            <View
+              style={[styles.glowCircle, { backgroundColor: getStateColor() }]}
+            />
           </Animated.View>
 
           {/* Cecy image container */}
@@ -252,9 +269,11 @@ function CecyVisualMode({
                 style={styles.cecyImage}
                 resizeMode="cover"
               />
-              
+
               {/* State indicator ring */}
-              <View style={[styles.stateRing, { borderColor: getStateColor() }]} />
+              <View
+                style={[styles.stateRing, { borderColor: getStateColor() }]}
+              />
             </View>
           </Animated.View>
 
@@ -273,7 +292,12 @@ function CecyVisualMode({
 
         {/* State information */}
         <View style={styles.stateInfo}>
-          <View style={[styles.stateIndicator, { backgroundColor: getStateColor() }]} />
+          <View
+            style={[
+              styles.stateIndicator,
+              { backgroundColor: getStateColor() },
+            ]}
+          />
           <Text style={[styles.stateText, { color: getStateColor() }]}>
             {getStateMessage()}
           </Text>
@@ -315,14 +339,19 @@ function ThinkingDot({ delay }: { delay: number }) {
 }
 
 // Floating particle component
-function FloatingParticle({ 
-  delay, 
-  color, 
-  position 
-}: { 
-  delay: number; 
-  color: string; 
-  position: { top?: string; left?: string; right?: string; bottom?: string };
+function FloatingParticle({
+  delay,
+  color,
+  position,
+}: {
+  delay: number;
+  color: string;
+  position: {
+    top?: DimensionValue | undefined;
+    left?: DimensionValue | undefined;
+    right?: DimensionValue | undefined;
+    bottom?: DimensionValue | undefined;
+  };
 }) {
   const translateY = useSharedValue(0);
   const opacity = useSharedValue(0.6);
@@ -336,7 +365,7 @@ function FloatingParticle({
       -1,
       true
     );
-    
+
     opacity.value = withRepeat(
       withSequence(
         withTiming(0.8, { duration: 2000 }),
@@ -353,13 +382,13 @@ function FloatingParticle({
   }));
 
   return (
-    <Animated.View 
+    <Animated.View
       style={[
-        styles.particle, 
-        animatedStyle, 
+        styles.particle,
+        animatedStyle,
         { backgroundColor: color },
-        position
-      ]} 
+        position,
+      ]}
     />
   );
 }
