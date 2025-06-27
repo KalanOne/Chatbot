@@ -75,6 +75,9 @@ export default function ChatScreen() {
         written: !chatMode,
       };
       setMessages((prev) => [...prev, botMessage]);
+      if (!chatMode) {
+        await handleSpeak(botMessage);
+      }
     } catch (error) {
       const botMessageError: Message = {
         id: generateUUIDv4(),
