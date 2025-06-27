@@ -2,7 +2,6 @@ import { Message } from "@/app/(tabs)";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
-  DimensionValue,
   Image,
   Keyboard,
   ScrollView,
@@ -18,6 +17,7 @@ import Animated, {
   withSequence,
   withTiming,
 } from "react-native-reanimated";
+import { FloatingParticle } from "./FloatingParticle";
 
 export { CecyVisualMode };
 
@@ -186,7 +186,7 @@ function CecyVisualMode({
     opacity: thoughtBubbleScale.value,
   }));
 
-  const getStateMessage = () => {
+  function getStateMessage() {
     switch (cecyState) {
       case "thinking":
         return "Pensando...";
@@ -197,9 +197,9 @@ function CecyVisualMode({
       default:
         return "";
     }
-  };
+  }
 
-  const getStateColor = () => {
+  function getStateColor() {
     switch (cecyState) {
       case "thinking":
         return "#F59E0B";
@@ -210,7 +210,7 @@ function CecyVisualMode({
       default:
         return "#94A3B8";
     }
-  };
+  }
 
   return (
     <ScrollView
@@ -336,61 +336,6 @@ function ThinkingDot({ delay }: { delay: number }) {
   }));
 
   return <Animated.View style={[styles.thinkingDot, animatedStyle]} />;
-}
-
-// Floating particle component
-function FloatingParticle({
-  delay,
-  color,
-  position,
-}: {
-  delay: number;
-  color: string;
-  position: {
-    top?: DimensionValue | undefined;
-    left?: DimensionValue | undefined;
-    right?: DimensionValue | undefined;
-    bottom?: DimensionValue | undefined;
-  };
-}) {
-  const translateY = useSharedValue(0);
-  const opacity = useSharedValue(0.6);
-
-  useEffect(() => {
-    translateY.value = withRepeat(
-      withSequence(
-        withTiming(-15, { duration: 3000 }),
-        withTiming(15, { duration: 3000 })
-      ),
-      -1,
-      true
-    );
-
-    opacity.value = withRepeat(
-      withSequence(
-        withTiming(0.8, { duration: 2000 }),
-        withTiming(0.3, { duration: 2000 })
-      ),
-      -1,
-      true
-    );
-  }, []);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: translateY.value }],
-    opacity: opacity.value,
-  }));
-
-  return (
-    <Animated.View
-      style={[
-        styles.particle,
-        animatedStyle,
-        { backgroundColor: color },
-        position,
-      ]}
-    />
-  );
 }
 
 const styles = StyleSheet.create({
@@ -559,11 +504,5 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     pointerEvents: "none",
-  },
-  particle: {
-    position: "absolute",
-    width: 5,
-    height: 5,
-    borderRadius: 2.5,
   },
 });
