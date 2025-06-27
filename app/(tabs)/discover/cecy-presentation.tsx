@@ -112,20 +112,20 @@ export default function CecyPresentationScreen() {
                 resizeMode="cover"
               />
               <View style={styles.mascotBadge}>
-                <Text style={styles.mascotText}>Cecy & Ocelote</Text>
+                <Text style={styles.mascotText}>Cecy & Ozzy</Text>
               </View>
             </View>
             <Text style={styles.introTitle}>¡Hola! Soy Cecy</Text>
             <Text style={styles.introText}>
               {/* Soy tu asistente virtual diseñada especialmente para apoyarte en
-              tu desarrollo personal y académico. Junto a mi compañero Ocelote,
+              tu desarrollo personal y académico. Junto a mi compañero Ozzy,
               estamos aquí para escucharte, orientarte y acompañarte en los
               momentos que más lo necesites. */}
               ¡Hola! Tengo 17 años, mi celular es mi mejor amigo y ¡últimamente
               no puedo dejar de ver TikTok! Me encanta estar al tanto de lo que
               pasa en las redes. Pero además, soy tu asistente virtual, diseñada
               especialmente para apoyarte en tu desarrollo personal y académico.
-              Junto a mi compañero Ocelote, estamos aquí para escucharte,
+              Junto a mi compañero Ozzy, estamos aquí para escucharte,
               orientarte y acompañarte en los momentos que más lo necesites.
             </Text>
           </View>
