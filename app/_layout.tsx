@@ -2,9 +2,11 @@ import { Stack } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useEffect } from "react";
 import * as Linking from "expo-linking";
-import { authService } from "@/services/auth.service";
+import { authService } from "@/services/auth.service"
+import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 
 export default function RootLayout() {
+  useFrameworkReady();
   useEffect(() => {
     // Handle deep linking for authentication
     const handleDeepLink = (url: string) => {
