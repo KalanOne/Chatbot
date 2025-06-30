@@ -5,7 +5,9 @@ import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
 import { Platform } from 'react-native';
 
-WebBrowser.maybeCompleteAuthSession(); // required for web only
+if (Platform.OS === 'web') {
+  WebBrowser.maybeCompleteAuthSession();
+}
 
 const redirectTo = makeRedirectUri();
 
