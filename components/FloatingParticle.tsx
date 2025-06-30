@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { DimensionValue, StyleSheet } from "react-native";
+import { ColorValue, DimensionValue, StyleSheet } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -10,6 +10,17 @@ import Animated, {
 } from "react-native-reanimated";
 
 export { FloatingParticle };
+export type { FloatingParticleProps };
+interface FloatingParticleProps {
+  delay: number;
+  color: ColorValue;
+  position: {
+    top?: DimensionValue | undefined;
+    left?: DimensionValue | undefined;
+    right?: DimensionValue | undefined;
+    bottom?: DimensionValue | undefined;
+  };
+}
 
 /**
  * Floating particle component
@@ -17,40 +28,33 @@ export { FloatingParticle };
  * so their animations are out of phase and look more natural.
  * You can achieve this by using setTimeout to start the animation after the delay.
  */
-function FloatingParticle({
-  delay,
-  color,
-  position,
-}: {
-  delay: number;
-  color: string;
-  position: {
-    top?: DimensionValue | undefined;
-    left?: DimensionValue | undefined;
-    right?: DimensionValue | undefined;
-    bottom?: DimensionValue | undefined;
-  };
-}) {
+function FloatingParticle({ delay, color, position }: FloatingParticleProps) {
   const translateY = useSharedValue(0);
   const opacity = useSharedValue(0.6);
 
   useEffect(() => {
-    translateY.value = withRepeat(
-      withSequence(
-        withTiming(-15, { duration: 3000 }),
-        withTiming(15, { duration: 3000 })
-      ),
-      -1,
-      true
+    translateY.value = withDelay(
+      delay,
+      withRepeat(
+        withSequence(
+          withTiming(-15, { duration: 3000 }),
+          withTiming(15, { duration: 3000 })
+        ),
+        -1,
+        true
+      )
     );
-    
-    opacity.value = withRepeat(
-      withSequence(
-        withTiming(0.8, { duration: 2000 }),
-        withTiming(0.3, { duration: 2000 }),
-      ),
-      -1,
-      true
+
+    opacity.value = withDelay(
+      delay,
+      withRepeat(
+        withSequence(
+          withTiming(0.8, { duration: 2000 }),
+          withTiming(0.3, { duration: 2000 })
+        ),
+        -1,
+        true
+      )
     );
   }, []);
 

@@ -1,5 +1,7 @@
 import { Message } from "@/app/(tabs)";
-import React, { useEffect, useRef, useState } from "react";
+import { PRINCIPAL_COLORS } from "@/utils/color";
+import { getRandomInt } from "@/utils/uuid";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -17,7 +19,8 @@ import Animated, {
   withSequence,
   withTiming,
 } from "react-native-reanimated";
-import { FloatingParticle } from "./FloatingParticle";
+import { FloatingParticle, FloatingParticleProps } from "./FloatingParticle";
+import { ThinkingDot } from "./ThinkingDot";
 
 export { CecyVisualMode };
 
@@ -31,6 +34,8 @@ interface CecyVisualModeProps {
 type CecyState = "waiting" | "thinking" | "speaking";
 
 const { width, height } = Dimensions.get("window");
+
+const PARTICLE_COUNT = 10;
 
 function CecyVisualMode({
   messages,
@@ -212,6 +217,19 @@ function CecyVisualMode({
     }
   }
 
+  const particles = useMemo(() => {
+    return Array.from({ length: PARTICLE_COUNT }).map<FloatingParticleProps>(
+      (_, i) => ({
+        color: PRINCIPAL_COLORS[i % PRINCIPAL_COLORS.length],
+        delay: getRandomInt(0, 5000), // delay aleatorio 0 - 5000 ms
+        position: {
+          top: `${getRandomInt(0, 100)}%`,
+          left: `${getRandomInt(0, 100)}%`,
+        },
+      })
+    );
+  }, []);
+
   return (
     <ScrollView
       ref={scrollViewRef}
@@ -228,7 +246,7 @@ function CecyVisualMode({
 
       {/* Decorative elements */}
       <View style={styles.decorativeElements}>
-        <FloatingParticle
+        {/* <FloatingParticle
           delay={0}
           color="#53AB32"
           position={{ top: "15%", left: "10%" }}
@@ -247,7 +265,15 @@ function CecyVisualMode({
           delay={1500}
           color="#E74889"
           position={{ top: "45%", right: "25%" }}
-        />
+        /> */}
+        {particles.map(({ color, delay, position }, i) => (
+          <FloatingParticle
+            key={`particle-${i}`}
+            color={color}
+            delay={delay}
+            position={position}
+          />
+        ))}
       </View>
 
       {/* Main content container */}
@@ -314,28 +340,6 @@ function CecyVisualMode({
       </View>
     </ScrollView>
   );
-}
-
-// Thinking dots component
-function ThinkingDot({ delay }: { delay: number }) {
-  const opacity = useSharedValue(0.3);
-
-  useEffect(() => {
-    opacity.value = withRepeat(
-      withSequence(
-        withTiming(1, { duration: 600 }),
-        withTiming(0.3, { duration: 600 })
-      ),
-      -1,
-      true
-    );
-  }, []);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-  }));
-
-  return <Animated.View style={[styles.thinkingDot, animatedStyle]} />;
 }
 
 const styles = StyleSheet.create({
@@ -440,13 +444,6 @@ const styles = StyleSheet.create({
   thinkingDots: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  thinkingDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: "#94A3B8",
-    marginHorizontal: 2,
   },
   stateInfo: {
     flexDirection: "row",
