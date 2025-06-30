@@ -13,12 +13,12 @@ import {
 } from "react-native";
 
 import { getChatResponse } from "@/api/chat.api";
-import { ChatMode } from "@/components/ChatMode";
 import { CecyVisualMode } from "@/components/CecyVisualMode";
+import { ChatMode } from "@/components/ChatMode";
 import { VoiceRecorder } from "@/components/VoiceRecorder";
-import { generateUUIDv4 } from "@/utils/uuid";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import * as Crypto from "expo-crypto";
 import { useFocusEffect } from "expo-router";
 import * as Speech from "expo-speech";
 
@@ -33,7 +33,7 @@ export interface Message {
 export default function ChatScreen() {
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: generateUUIDv4(),
+      id: Crypto.randomUUID(),
       text: "¡Hola! Estoy aquí para escucharte y apoyarte. Ya sea que estés lidiando con el acoso escolar, te sientas abrumado o simplemente necesites hablar con alguien, estoy aquí para ti. ¿Qué tienes en mente hoy?",
       isUser: false,
       timestamp: new Date(),
@@ -50,7 +50,7 @@ export default function ChatScreen() {
   const [currentSpeakingId, setCurrentSpeakingId] = useState<string | null>(
     null
   );
-  const [chat_id] = useState(generateUUIDv4());
+  const [chat_id] = useState(Crypto.randomUUID());
 
   async function sendMessage(text: string) {
     if (!text.trim()) return;
@@ -74,28 +74,28 @@ export default function ChatScreen() {
         mensaje: text,
       });
       const botMessage: Message = {
-        id: generateUUIDv4(),
+        id: Crypto.randomUUID(),
         text: response.respuesta,
         isUser: false,
         timestamp: new Date(),
         written: !chatMode,
       };
       setMessages((prev) => [...prev, botMessage]);
-      
+
       // Auto-play audio in visual mode
       if (!chatMode && sound) {
         await handleSpeak(botMessage);
       }
     } catch (error) {
       const botMessageError: Message = {
-        id: generateUUIDv4(),
+        id: Crypto.randomUUID(),
         text: "Lo siento 😢, ocurrió un error al procesar tu mensaje.",
         isUser: false,
         timestamp: new Date(),
         written: !chatMode,
       };
       setMessages((prev) => [...prev, botMessageError]);
-      
+
       // Auto-play error message in visual mode
       if (!chatMode && sound) {
         await handleSpeak(botMessageError);
@@ -212,10 +212,9 @@ export default function ChatScreen() {
                 {chatMode ? "Chat de Apoyo" : "Cecy Visual"}
               </Text>
               <Text style={styles.headerSubtitle}>
-                {chatMode 
-                  ? "Un espacio seguro para hablar" 
-                  : "Interacción visual con Cecy"
-                }
+                {chatMode
+                  ? "Un espacio seguro para hablar"
+                  : "Interacción visual con Cecy"}
               </Text>
             </View>
             <View style={styles.headerButtons}>
@@ -223,7 +222,9 @@ export default function ChatScreen() {
                 onPress={handleModeToggle}
                 style={styles.modeButton}
               >
-                <Animated.View style={{ transform: [{ scale: modeScaleAnim }] }}>
+                <Animated.View
+                  style={{ transform: [{ scale: modeScaleAnim }] }}
+                >
                   <MaterialIcons
                     name={chatMode ? "visibility" : "chat"}
                     size={24}

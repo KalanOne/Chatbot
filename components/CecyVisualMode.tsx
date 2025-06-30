@@ -221,7 +221,7 @@ function CecyVisualMode({
     return Array.from({ length: PARTICLE_COUNT }).map<FloatingParticleProps>(
       (_, i) => ({
         color: PRINCIPAL_COLORS[i % PRINCIPAL_COLORS.length],
-        delay: getRandomInt(0, 5000), // delay aleatorio 0 - 5000 ms
+        delay: getRandomInt(0, 3000), // delay aleatorio 0 - 3000 ms
         position: {
           top: `${getRandomInt(0, 100)}%`,
           left: `${getRandomInt(0, 100)}%`,
