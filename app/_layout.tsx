@@ -6,7 +6,6 @@ import { authService } from "@/services/auth.service"
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 
 export default function RootLayout() {
-  useFrameworkReady();
   useEffect(() => {
     // Handle deep linking for authentication
     const handleDeepLink = (url: string) => {
