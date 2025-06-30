@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState, useEffect } from "react";
 import {
   Animated,
   KeyboardAvoidingView,
@@ -10,12 +10,16 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Alert,
 } from "react-native";
 
 import { getChatResponse } from "@/api/chat.api";
 import { ChatMode } from "@/components/ChatMode";
 import { CecyVisualMode } from "@/components/CecyVisualMode";
 import { VoiceRecorder } from "@/components/VoiceRecorder";
+import { AuthButton } from "@/components/AuthButton";
+import { useChat } from "@/hooks/useChat";
+import { useAuth } from "@/hooks/useAuth";
 import { generateUUIDv4 } from "@/utils/uuid";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -31,6 +35,9 @@ export interface Message {
 }
 
 export default function ChatScreen() {
+  const { user } = useAuth();
+  const { currentChat, messages: dbMessages, addMessage, loading: chatLoading, error: chatError } = useChat();
+  
   const [messages, setMessages] = useState<Message[]>([
     {
       id: generateUUIDv4(),
@@ -52,8 +59,34 @@ export default function ChatScreen() {
   );
   const [chat_id] = useState(generateUUIDv4());
 
+  // Sync database messages with local messages
+  useEffect(() => {
+    if (dbMessages.length > 0) {
+      const convertedMessages: Message[] = dbMessages.map(msg => ({
+        id: msg.id,
+        text: msg.content,
+        isUser: msg.sender_type === 'user',
+        timestamp: new Date(msg.timestamp),
+        written: true,
+      }));
+      
+      // Keep the initial welcome message and add database messages
+      setMessages(prev => {
+        const welcomeMessage = prev[0];
+        return [welcomeMessage, ...convertedMessages];
+      });
+    }
+  }, [dbMessages]);
+
+  // Show error if chat initialization fails
+  useEffect(() => {
+    if (chatError) {
+      Alert.alert('Error', chatError);
+    }
+  }, [chatError]);
+
   async function sendMessage(text: string) {
-    if (!text.trim()) return;
+    if (!text.trim() || !currentChat) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -69,10 +102,17 @@ export default function ChatScreen() {
     setIsUserTyping(false);
 
     try {
+      // Save user message to database
+      await addMessage(text.trim(), 'user', {
+        platform: Platform.OS,
+        timestamp: new Date().toISOString(),
+      });
+
       const response = await getChatResponse({
         chat_id,
         mensaje: text,
       });
+
       const botMessage: Message = {
         id: generateUUIDv4(),
         text: response.respuesta,
@@ -80,7 +120,15 @@ export default function ChatScreen() {
         timestamp: new Date(),
         written: !chatMode,
       };
+
       setMessages((prev) => [...prev, botMessage]);
+
+      // Save bot message to database
+      await addMessage(response.respuesta, 'bot', {
+        platform: Platform.OS,
+        timestamp: new Date().toISOString(),
+        originalChatId: chat_id,
+      });
       
       // Auto-play audio in visual mode
       if (!chatMode && sound) {
@@ -95,6 +143,17 @@ export default function ChatScreen() {
         written: !chatMode,
       };
       setMessages((prev) => [...prev, botMessageError]);
+
+      // Save error message to database
+      try {
+        await addMessage(botMessageError.text, 'bot', {
+          platform: Platform.OS,
+          timestamp: new Date().toISOString(),
+          error: true,
+        });
+      } catch (dbError) {
+        console.error('Error saving error message to database:', dbError);
+      }
       
       // Auto-play error message in visual mode
       if (!chatMode && sound) {
@@ -217,8 +276,14 @@ export default function ChatScreen() {
                   : "Interacción visual con Cecy"
                 }
               </Text>
+              {user && (
+                <Text style={styles.userIndicator}>
+                  Sesión guardada • {user.email}
+                </Text>
+              )}
             </View>
             <View style={styles.headerButtons}>
+              <AuthButton />
               <TouchableOpacity
                 onPress={handleModeToggle}
                 style={styles.modeButton}
@@ -284,15 +349,15 @@ export default function ChatScreen() {
             <TouchableOpacity
               style={[
                 styles.sendButton,
-                !inputText.trim() && styles.sendButtonDisabled,
+                (!inputText.trim() || chatLoading) && styles.sendButtonDisabled,
               ]}
               onPress={() => sendMessage(inputText)}
-              disabled={!inputText.trim()}
+              disabled={!inputText.trim() || chatLoading}
             >
               <Feather
                 name="send"
                 size={20}
-                color={!inputText.trim() ? "#94A3B8" : "#FFFFFF"}
+                color={(!inputText.trim() || chatLoading) ? "#94A3B8" : "#FFFFFF"}
               />
             </TouchableOpacity>
           </View>
@@ -329,6 +394,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#E2E8F0",
     opacity: 0.9,
+  },
+  userIndicator: {
+    fontSize: 12,
+    color: "#E2E8F0",
+    opacity: 0.8,
+    marginTop: 2,
   },
   inputContainer: {
     paddingHorizontal: 16,
@@ -369,12 +440,12 @@ const styles = StyleSheet.create({
   headerContent: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
   },
   headerButtons: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 12,
+    gap: 8,
   },
   modeButton: {
     padding: 8,
