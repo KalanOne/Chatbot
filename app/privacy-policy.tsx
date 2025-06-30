@@ -132,7 +132,7 @@ export default function PrivacyPolicyScreen() {
     },
   ];
 
-  await function navigateToCecytem() {
+  async function navigateToCecytem() {
     await Linking.openURL("https://www.cecyteorienta.com/");
   }
   return (
