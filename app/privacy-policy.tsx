@@ -2,6 +2,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import React from "react";
 import {
+  Linking,
   Platform,
   ScrollView,
   StatusBar,
@@ -9,14 +10,31 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Linking
 } from "react-native";
 
 import Feather from "@expo/vector-icons/Feather";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
+interface PrivacyPart {
+  title: string;
+  content: Content[];
+}
+
+interface Content {
+  subtitle: string;
+  text?: string;
+  subsections?: Subsection[];
+  list?: string[];
+}
+
+interface Subsection {
+  title: string;
+  text: string;
+  list?: string[];
+}
+
 export default function PrivacyPolicyScreen() {
-  const sections = [
+  const sections: PrivacyPart[] = [
     {
       title: "Interpretation and Definitions",
       content: [
@@ -29,9 +47,9 @@ export default function PrivacyPolicyScreen() {
           text: "For the purposes of this Privacy Policy:",
           list: [
             "Account means a unique account created for You to access our Service or parts of our Service.",
-            "Affiliate means an entity that controls, is controlled by or is under common control with a party, where \"control\" means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.",
+            'Affiliate means an entity that controls, is controlled by or is under common control with a party, where "control" means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.',
             "Application refers to Chatbot Cecy, the software program provided by the Company.",
-            "Company (referred to as either \"the Company\", \"We\", \"Us\" or \"Our\" in this Agreement) refers to Colegio de Estudios Científicos y Tecnológicos del Estado de Michoacán, Loma de las Liebres 180, 58095.",
+            'Company (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to Colegio de Estudios Científicos y Tecnológicos del Estado de Michoacán, Loma de las Liebres 180, 58095.',
             "Country refers to: Mexico",
             "Device means any device that can access the Service such as a computer, a cellphone or a digital tablet.",
             "Personal Data is any information that relates to an identified or identifiable individual.",
@@ -183,17 +201,17 @@ export default function PrivacyPolicyScreen() {
         {sections.map((section, sectionIndex) => (
           <View key={sectionIndex} style={styles.section}>
             <Text style={styles.sectionTitle}>{section.title}</Text>
-            
+
             {section.content.map((content, contentIndex) => (
               <View key={contentIndex} style={styles.contentBlock}>
                 {content.subtitle && (
                   <Text style={styles.subtitle}>{content.subtitle}</Text>
                 )}
-                
+
                 {content.text && (
                   <Text style={styles.bodyText}>{content.text}</Text>
                 )}
-                
+
                 {content.list && (
                   <View style={styles.listContainer}>
                     {content.list.map((item, itemIndex) => (
@@ -204,23 +222,26 @@ export default function PrivacyPolicyScreen() {
                     ))}
                   </View>
                 )}
-                
-                {content.subsections && content.subsections.map((subsection, subIndex) => (
-                  <View key={subIndex} style={styles.subsection}>
-                    <Text style={styles.subsectionTitle}>{subsection.title}</Text>
-                    <Text style={styles.bodyText}>{subsection.text}</Text>
-                    {subsection.list && (
-                      <View style={styles.listContainer}>
-                        {subsection.list.map((item, itemIndex) => (
-                          <View key={itemIndex} style={styles.listItem}>
-                            <View style={styles.bullet} />
-                            <Text style={styles.listText}>{item}</Text>
-                          </View>
-                        ))}
-                      </View>
-                    )}
-                  </View>
-                ))}
+
+                {content.subsections &&
+                  content.subsections.map((subsection, subIndex) => (
+                    <View key={subIndex} style={styles.subsection}>
+                      <Text style={styles.subsectionTitle}>
+                        {subsection.title}
+                      </Text>
+                      <Text style={styles.bodyText}>{subsection.text}</Text>
+                      {subsection.list && (
+                        <View style={styles.listContainer}>
+                          {subsection.list.map((item, itemIndex) => (
+                            <View key={itemIndex} style={styles.listItem}>
+                              <View style={styles.bullet} />
+                              <Text style={styles.listText}>{item}</Text>
+                            </View>
+                          ))}
+                        </View>
+                      )}
+                    </View>
+                  ))}
               </View>
             ))}
           </View>
@@ -237,13 +258,10 @@ export default function PrivacyPolicyScreen() {
             </Text>
             <TouchableOpacity
               style={styles.contactButton}
-              onPress={() => {
-                // You can implement web browser opening here if needed
-                console.log("Open website: https://www.cecyteorienta.com/");
-              }}
+              onPress={navigateToCecytem}
             >
               <Feather name="external-link" size={18} color="#FFFFFF" />
-              <Text style={styles.contactButtonText} onPress={navigateToCecytem} >Visitar Sitio Web</Text>
+              <Text style={styles.contactButtonText}>Visitar Sitio Web</Text>
             </TouchableOpacity>
           </View>
         </View>
