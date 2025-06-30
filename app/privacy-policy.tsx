@@ -9,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Linking
 } from "react-native";
 
 import Feather from "@expo/vector-icons/Feather";
@@ -131,6 +132,9 @@ export default function PrivacyPolicyScreen() {
     },
   ];
 
+  function navigateToCecytem() {
+    await Linking.openURL("https://www.cecyteorienta.com/");
+  }
   return (
     <View style={styles.container}>
       <StatusBar
