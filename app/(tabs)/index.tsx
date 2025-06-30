@@ -1,11 +1,9 @@
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   Animated,
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -15,19 +13,21 @@ import {
 } from "react-native";
 
 import { getChatResponse } from "@/api/chat.api";
-import { ChatMessage } from "@/components/ChatMessage";
-import { TypingIndicator } from "@/components/TypingIndicator";
+import { ChatMode } from "@/components/ChatMode";
+import { CecyVisualMode } from "@/components/CecyVisualMode";
 import { VoiceRecorder } from "@/components/VoiceRecorder";
 import { generateUUIDv4 } from "@/utils/uuid";
 import Feather from "@expo/vector-icons/Feather";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useFocusEffect } from "expo-router";
 import * as Speech from "expo-speech";
 
-interface Message {
+export interface Message {
   id: string;
   text: string;
   isUser: boolean;
   timestamp: Date;
+  written: boolean;
 }
 
 export default function ChatScreen() {
@@ -37,23 +37,20 @@ export default function ChatScreen() {
       text: "¡Hola! Estoy aquí para escucharte y apoyarte. Ya sea que estés lidiando con el acoso escolar, te sientas abrumado o simplemente necesites hablar con alguien, estoy aquí para ti. ¿Qué tienes en mente hoy?",
       isUser: false,
       timestamp: new Date(),
+      written: false,
     },
   ]);
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [sound, setSound] = useState(true);
-  const scrollViewRef = useRef<ScrollView>(null);
+  const [chatMode, setChatMode] = useState(true);
+  const [isUserTyping, setIsUserTyping] = useState(false);
   const scaleAnim = useRef(new Animated.Value(1)).current;
+  const modeScaleAnim = useRef(new Animated.Value(1)).current;
   const [currentSpeakingId, setCurrentSpeakingId] = useState<string | null>(
     null
   );
   const [chat_id] = useState(generateUUIDv4());
-
-  function scrollToBottom() {
-    setTimeout(() => {
-      scrollViewRef.current?.scrollToEnd({ animated: true });
-    }, 100);
-  }
 
   async function sendMessage(text: string) {
     if (!text.trim()) return;
@@ -63,11 +60,13 @@ export default function ChatScreen() {
       text: text.trim(),
       isUser: true,
       timestamp: new Date(),
+      written: true,
     };
 
     setMessages((prev) => [...prev, userMessage]);
     setInputText("");
     setIsTyping(true);
+    setIsUserTyping(false);
 
     try {
       const response = await getChatResponse({
@@ -79,16 +78,28 @@ export default function ChatScreen() {
         text: response.respuesta,
         isUser: false,
         timestamp: new Date(),
+        written: !chatMode,
       };
       setMessages((prev) => [...prev, botMessage]);
+      
+      // Auto-play audio in visual mode
+      if (!chatMode && sound) {
+        await handleSpeak(botMessage);
+      }
     } catch (error) {
       const botMessageError: Message = {
         id: generateUUIDv4(),
         text: "Lo siento 😢, ocurrió un error al procesar tu mensaje.",
         isUser: false,
         timestamp: new Date(),
+        written: !chatMode,
       };
       setMessages((prev) => [...prev, botMessageError]);
+      
+      // Auto-play error message in visual mode
+      if (!chatMode && sound) {
+        await handleSpeak(botMessageError);
+      }
     } finally {
       setIsTyping(false);
     }
@@ -96,7 +107,6 @@ export default function ChatScreen() {
 
   function handleVoiceTranscription(transcription: string) {
     if (transcription) {
-      // sendMessage(transcription);
       setInputText(transcription);
     }
   }
@@ -123,6 +133,43 @@ export default function ChatScreen() {
     ]).start();
   }
 
+  function handleModeToggle() {
+    setChatMode((prev) => {
+      const newMode = !prev;
+      // Enable sound automatically when switching to visual mode
+      if (!newMode && !sound) {
+        setSound(true);
+      }
+      return newMode;
+    });
+
+    Animated.sequence([
+      Animated.timing(modeScaleAnim, {
+        toValue: 0.8,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+      Animated.timing(modeScaleAnim, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }
+
+  function handleFinishedWritten(index: number) {
+    setMessages((prevMessages) => {
+      const updated = [...prevMessages];
+      updated[index] = { ...updated[index], written: true };
+      return updated;
+    });
+  }
+
+  function handleInputChange(text: string) {
+    setInputText(text);
+    setIsUserTyping(text.length > 0);
+  }
+
   useFocusEffect(
     useCallback(() => {
       return () => {
@@ -131,39 +178,24 @@ export default function ChatScreen() {
     }, [])
   );
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  useEffect(() => {
-    const listener = Keyboard.addListener("keyboardDidShow", scrollToBottom);
-
-    return () => {
-      listener.remove();
-    };
-  }, []);
-
-  const handleSpeak = async (message: Message) => {
+  async function handleSpeak(message: Message) {
     if (!sound) return;
 
-    // Detener reproducción anterior si existe
     if (currentSpeakingId) {
       await Speech.stop();
     }
 
-    // Reproducir nuevo mensaje
     Speech.speak(message.text, {
-      // language: "es",
       onStart: () => setCurrentSpeakingId(message.id),
       onDone: () => setCurrentSpeakingId(null),
       onStopped: () => setCurrentSpeakingId(null),
     });
-  };
+  }
 
-  const handleStopSpeaking = async () => {
+  async function handleStopSpeaking() {
     await Speech.stop();
     setCurrentSpeakingId(null);
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -176,59 +208,70 @@ export default function ChatScreen() {
         <LinearGradient colors={["#F19433", "#f7ad44"]} style={styles.header}>
           <View style={styles.headerContent}>
             <View>
-              <Text style={styles.headerTitle}>Chat de Apoyo</Text>
+              <Text style={styles.headerTitle}>
+                {chatMode ? "Chat de Apoyo" : "Cecy Visual"}
+              </Text>
               <Text style={styles.headerSubtitle}>
-                Un espacio seguro para hablar
+                {chatMode 
+                  ? "Un espacio seguro para hablar" 
+                  : "Interacción visual con Cecy"
+                }
               </Text>
             </View>
-            <TouchableOpacity
-              onPress={handleSoundToggle}
-              style={styles.soundButton}
-            >
-              <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-                <Feather
-                  name={sound ? "volume-2" : "volume-x"}
-                  size={24}
-                  color="#FFF"
-                />
-              </Animated.View>
-            </TouchableOpacity>
+            <View style={styles.headerButtons}>
+              <TouchableOpacity
+                onPress={handleModeToggle}
+                style={styles.modeButton}
+              >
+                <Animated.View style={{ transform: [{ scale: modeScaleAnim }] }}>
+                  <MaterialIcons
+                    name={chatMode ? "visibility" : "chat"}
+                    size={24}
+                    color="#FFF"
+                  />
+                </Animated.View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleSoundToggle}
+                style={styles.soundButton}
+              >
+                <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+                  <Feather
+                    name={sound ? "volume-2" : "volume-x"}
+                    size={24}
+                    color="#FFF"
+                  />
+                </Animated.View>
+              </TouchableOpacity>
+            </View>
           </View>
         </LinearGradient>
-        <ScrollView
-          ref={scrollViewRef}
-          style={styles.messagesContainer}
-          contentContainerStyle={styles.messagesContent}
-          showsVerticalScrollIndicator={false}
-        >
-          {messages.map((message) => (
-            <ChatMessage
-              key={message.id}
-              message={message}
-              sound={sound}
-              isSpeaking={currentSpeakingId === message.id}
-              onSpeak={() => handleSpeak(message)}
-              onStop={handleStopSpeaking}
-            />
-          ))}
-          {isTyping && <TypingIndicator />}
-        </ScrollView>
+
+        {chatMode ? (
+          <ChatMode
+            messages={messages}
+            isTyping={isTyping}
+            sound={sound}
+            currentSpeakingId={currentSpeakingId}
+            handleSpeak={handleSpeak}
+            handleStopSpeaking={handleStopSpeaking}
+            handleFinishedWritten={handleFinishedWritten}
+          />
+        ) : (
+          <CecyVisualMode
+            messages={messages}
+            isTyping={isTyping}
+            currentSpeakingId={currentSpeakingId}
+            isUserTyping={isUserTyping}
+          />
+        )}
+
         <View style={styles.inputContainer}>
           <View style={styles.inputWrapper}>
-            {/* <TouchableOpacity
-              onPress={handleSoundToggle}
-              style={styles.soundButtonInput}
-            >
-              <Feather
-                name={sound ? "volume-2" : "volume-x"}
-                size={20}
-                color={sound ? "#94A3B8" : "#94A3B8"}
-              />
-            </TouchableOpacity> */}
             <TextInput
               style={styles.textInput}
               value={inputText}
-              onChangeText={setInputText}
+              onChangeText={handleInputChange}
               placeholder="Escriba su mensaje aquí..."
               placeholderTextColor="#94A3B8"
               multiline
@@ -287,13 +330,6 @@ const styles = StyleSheet.create({
     color: "#E2E8F0",
     opacity: 0.9,
   },
-  messagesContainer: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-  messagesContent: {
-    paddingVertical: 20,
-  },
   inputContainer: {
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -330,20 +366,24 @@ const styles = StyleSheet.create({
   sendButtonDisabled: {
     backgroundColor: "#E2E8F0",
   },
-  ////
   headerContent: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  soundButton: {
+  headerButtons: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  modeButton: {
     padding: 8,
     borderRadius: 20,
     backgroundColor: "rgba(255, 255, 255, 0.2)",
   },
-  soundButtonInput: {
+  soundButton: {
     padding: 8,
-    marginRight: 8,
-    alignSelf: "center",
+    borderRadius: 20,
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
   },
 });

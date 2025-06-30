@@ -2,19 +2,19 @@ import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import React from "react";
 import {
+  Image,
+  Platform,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Platform,
-  Image,
 } from "react-native";
 
+import AntDesign from "@expo/vector-icons/AntDesign";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import AntDesign from "@expo/vector-icons/AntDesign";
 
 export default function CecyPresentationScreen() {
   const cecyFeatures = [
@@ -112,15 +112,21 @@ export default function CecyPresentationScreen() {
                 resizeMode="cover"
               />
               <View style={styles.mascotBadge}>
-                <Text style={styles.mascotText}>Cecy & Ocelote</Text>
+                <Text style={styles.mascotText}>Cecy & Ozzy</Text>
               </View>
             </View>
             <Text style={styles.introTitle}>¡Hola! Soy Cecy</Text>
             <Text style={styles.introText}>
-              Soy tu asistente virtual diseñada especialmente para apoyarte en
-              tu desarrollo personal y académico. Junto a mi compañero Ocelote,
+              {/* Soy tu asistente virtual diseñada especialmente para apoyarte en
+              tu desarrollo personal y académico. Junto a mi compañero Ozzy,
               estamos aquí para escucharte, orientarte y acompañarte en los
-              momentos que más lo necesites.
+              momentos que más lo necesites. */}
+              ¡Hola! Tengo 17 años, mi celular es mi mejor amigo y ¡últimamente
+              no puedo dejar de ver TikTok! Me encanta estar al tanto de lo que
+              pasa en las redes. Pero además, soy tu asistente virtual, diseñada
+              especialmente para apoyarte en tu desarrollo personal y académico.
+              Junto a mi compañero Ozzy, estamos aquí para escucharte,
+              orientarte y acompañarte en los momentos que más lo necesites.
             </Text>
           </View>
         </View>
@@ -131,9 +137,7 @@ export default function CecyPresentationScreen() {
           <View style={styles.featuresGrid}>
             {cecyFeatures.map((feature, index) => (
               <View key={index} style={styles.featureCard}>
-                <View style={styles.featureIconContainer}>
-                  {feature.icon}
-                </View>
+                <View style={styles.featureIconContainer}>{feature.icon}</View>
                 <Text style={styles.featureTitle}>{feature.title}</Text>
                 <Text style={styles.featureDescription}>
                   {feature.description}

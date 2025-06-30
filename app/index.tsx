@@ -54,7 +54,7 @@ export default function WelcomeScreen() {
             >
               <View style={styles.mascotContainer}>
                 <View style={styles.mascotBadge}>
-                  <Text style={styles.mascotText}>Cecy & Ocelote</Text>
+                  <Text style={styles.mascotText}>Cecy & Ozzy</Text>
                 </View>
               </View>
             </LinearGradient> */}
