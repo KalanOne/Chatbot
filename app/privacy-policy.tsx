@@ -132,7 +132,7 @@ export default function PrivacyPolicyScreen() {
     },
   ];
 
-  function navigateToCecytem() {
+  await function navigateToCecytem() {
     await Linking.openURL("https://www.cecyteorienta.com/");
   }
   return (
@@ -243,7 +243,7 @@ export default function PrivacyPolicyScreen() {
               }}
             >
               <Feather name="external-link" size={18} color="#FFFFFF" />
-              <Text style={styles.contactButtonText}>Visitar Sitio Web</Text>
+              <Text style={styles.contactButtonText} onPress={navigateToCecytem} >Visitar Sitio Web</Text>
             </TouchableOpacity>
           </View>
         </View>
