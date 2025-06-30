@@ -38,8 +38,7 @@ function FloatingParticle({
     translateY.value = withRepeat(
       withSequence(
         withTiming(-15, { duration: 3000 }),
-        withTiming(15, { duration: 3000 }),
-        withDelay(delay, 15)
+        withTiming(15, { duration: 3000 })
       ),
       -1,
       true
