@@ -9,14 +9,13 @@ import { Platform } from "react-native";
 
 export { http };
 
-export type { HttpArguments };
+  export type { HttpArguments };
 
 const apisUrls = {
   translateApi:
-    process.env.EXPO_PUBLIC_API_TRANSLATE_URL ??
-    "https://82407.pythonanywhere.com",
+    process.env.EXPO_PUBLIC_API_TRANSLATE_URL,
   chatApi:
-    process.env.EXPO_PUBLIC_API_CHAT_URL ?? "https://cecyapi-2h4u.onrender.com",
+    process.env.EXPO_PUBLIC_API_CHAT_URL,
 };
 
 interface HttpArguments {
