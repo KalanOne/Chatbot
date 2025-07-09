@@ -8,6 +8,6 @@ async function getTextFromSpeech({ data }: { data: FormData }) {
     data: data,
     method: "POST",
     dataWithFiles: true,
-    baseURL: "translateApi",
+    baseURL: "chatApi",
   });
 }

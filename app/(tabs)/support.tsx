@@ -17,7 +17,7 @@ import Feather from "@expo/vector-icons/Feather";
 export default function SupportScreen() {
   const supportTips = [
     {
-      title: "No Estas Sol@",
+      title: "No Estas Solo/a",
       description:
         "Sea cual sea tu situación, hay personas que se preocupan y quieren ayudarte.",
       icon: <Feather name="users" size={24} color="#10B981" />,

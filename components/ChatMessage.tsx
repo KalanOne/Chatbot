@@ -1,3 +1,4 @@
+import { Message } from "@/app/(tabs)";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useFocusEffect } from "expo-router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -11,19 +12,13 @@ import Animated, {
 
 export { ChatMessage };
 
-interface Message {
-  id: string;
-  text: string;
-  isUser: boolean;
-  timestamp: Date;
-}
-
 interface ChatMessageProps {
   message: Message;
   sound: boolean;
   isSpeaking: boolean;
   onSpeak: () => void;
   onStop: () => void;
+  handleFinishedWritten: () => void;
 }
 
 function ChatMessage({
@@ -32,6 +27,7 @@ function ChatMessage({
   isSpeaking,
   onSpeak,
   onStop,
+  handleFinishedWritten,
 }: ChatMessageProps) {
   const [displayText, setDisplayText] = useState("");
   const [showTyping, setShowTyping] = useState(!message.isUser);
@@ -45,7 +41,7 @@ function ChatMessage({
     opacity.value = withTiming(1, { duration: 300 });
     translateY.value = withSpring(0, { damping: 15, stiffness: 150 });
 
-    if (!message.isUser) {
+    if (!message.isUser && !message.written) {
       currentIndexRef.current = 0;
       const totalChars = message.text.length;
       const typingSpeed = totalChars > 0 ? totalDuration / totalChars : 0;
@@ -61,6 +57,7 @@ function ChatMessage({
           timeoutRef.current = setTimeout(typeText, typingSpeed);
         } else {
           setShowTyping(false);
+          handleFinishedWritten(); // ✅ Marcar como terminado
         }
       };
 
@@ -71,9 +68,9 @@ function ChatMessage({
     }
 
     return () => {
-      if (!message.isUser && isSpeaking) {
-        onStop();
-      }
+      // if (!message.isUser && isSpeaking) {
+      //   onStop();
+      // }
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, [message.text, message.isUser]);
@@ -90,13 +87,14 @@ function ChatMessage({
   useFocusEffect(
     useCallback(() => {
       return () => {
-        if (currentIndexRef.current < message.text.length) {
+        if (!message.isUser && !message.written) {
           if (timeoutRef.current) clearTimeout(timeoutRef.current);
           setDisplayText(message.text);
           setShowTyping(false);
+          handleFinishedWritten();
         }
       };
-    }, [message.text])
+    }, [message.text, message.written])
   );
 
   return (
@@ -132,7 +130,12 @@ function ChatMessage({
               {showTyping && <Text style={styles.cursor}>|</Text>}
             </Text>
           </View>
-          {message.isUser && <AntDesign name="user" size={30} color="black" />}
+          {message.isUser && (
+            <Image
+              source={require("@/assets/images/OzzyFeliz2.jpg")}
+              style={{ width: 30, height: 30, borderRadius: 12 }}
+            />
+          )}
         </View>
         <View style={styles.timeStampReproducerContainer}>
           {!message.isUser && sound && (

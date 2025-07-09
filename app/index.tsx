@@ -48,26 +48,12 @@ export default function WelcomeScreen() {
               style={styles.heroImage}
               resizeMode="cover"
             />
-            {/* <LinearGradient
-              colors={["transparent", "rgba(0,0,0,0.7)"]}
-              style={styles.imageOverlay}
-            >
-              <View style={styles.mascotContainer}>
-                <View style={styles.mascotBadge}>
-                  <Text style={styles.mascotText}>Cecy & Ocelote</Text>
-                </View>
-              </View>
-            </LinearGradient> */}
           </View>
 
           {/* Welcome Text */}
           <View style={styles.textContainer}>
             <Text style={styles.welcomeTitle}>¡Bienvenid@ a</Text>
             <Text style={styles.appTitle}>Cecy te orienta!</Text>
-            {/* <Text style={styles.subtitle}>
-              Tu espacio seguro para fortalecer tus habilidades y tomar
-              decisiones informadas para tu futuro
-            </Text> */}
           </View>
 
           {/* Features */}
@@ -121,12 +107,16 @@ export default function WelcomeScreen() {
             </LinearGradient>
           </TouchableOpacity>
 
-          <View style={styles.privacyContainer}>
+          <TouchableOpacity
+            style={styles.privacyContainer}
+            onPress={() => router.push("/privacy-policy")}
+            activeOpacity={0.7}
+          >
             <Feather name="lock" size={14} color="#FFFFFF" />
             <Text style={styles.privacyText}>
               Tu privacidad y seguridad son nuestra prioridad
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
 
         {/* Decorative Elements */}
@@ -195,29 +185,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  imageOverlay: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: "40%",
-    justifyContent: "flex-end",
-    padding: 16,
-  },
-  mascotContainer: {
-    alignItems: "center",
-  },
-  mascotBadge: {
-    backgroundColor: "rgba(255, 255, 255, 0.95)",
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 16,
-  },
-  mascotText: {
-    fontSize: 13,
-    fontWeight: "600",
-    color: "#1E293B",
-  },
   textContainer: {
     alignItems: "center",
     marginBottom: 24,
@@ -239,14 +206,6 @@ const styles = StyleSheet.create({
     textShadowColor: "rgba(0, 0, 0, 0.3)",
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
-  },
-  subtitle: {
-    fontSize: 15,
-    fontWeight: "400",
-    color: "#E8F4FD",
-    textAlign: "center",
-    lineHeight: 22,
-    paddingHorizontal: 8,
   },
   featuresContainer: {
     width: "100%",
@@ -315,12 +274,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     opacity: 0.85,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
   },
   privacyText: {
     fontSize: 11,
     color: "#FFFFFF",
     marginLeft: 6,
     textAlign: "center",
+    textDecorationLine: "underline",
   },
   decorativeCircle: {
     position: "absolute",

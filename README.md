@@ -1,50 +1,115 @@
-# Welcome to your Expo app 👋
+# 💚 CecyBot – Tu compañera de bienestar emocional
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<p align="center">
+  <img src="ScreenShots/IPhone%20Visual%20Mode%20Talking.jpeg" alt="Chat visual" width="30%" style="border-radius: 15px; margin-right: 10px;" />
+  <img src="ScreenShots/IPhone%20Resources.jpeg" alt="Recursos de ayuda" width="30%" style="border-radius: 15px; margin: 0 10px;" />
+  <img src="ScreenShots/IPhone%20Discover.jpeg" alt="Descubrir" width="30%" style="border-radius: 15px; margin-left: 10px;" />
+</p>
 
-## Get started
+> App móvil desarrollada con ❤️ para brindar apoyo emocional, información confiable y herramientas de ayuda personal de manera segura, privada y amigable.
 
-1. Install dependencies
+<div align="center">
+  <img src="https://img.shields.io/github/last-commit/KalanOne/Chatbot?color=4ade80&label=Last%20Commit&style=flat-square" alt="Last Commit" style="border-radius:5px" />
+  <img src="https://img.shields.io/github/stars/KalanOne/Chatbot?style=flat-square&color=facc15" alt="Stars" style="border-radius:5px" />
+  <img src="https://img.shields.io/github/issues/KalanOne/Chatbot?style=flat-square&color=ef4444" alt="Issues" style="border-radius:5px" />
+  <img src="https://img.shields.io/github/license/KalanOne/Chatbot?style=flat-square&color=6366f1" alt="License" style="border-radius:5px" />
+</div>
 
-   ```bash
-   npm install
-   ```
+---
 
-2. Start the app
+## 🌟 Características principales
 
-   ```bash
-   npx expo start
-   ```
+### 🧠 Modo Visual e Interactivo
+Interactúa con **Cecy**, una asistente animada que responde tus preguntas con expresiones y animaciones que simulan empatía y compañía.
 
-In the output, you'll find options to open the app in a
+### 💬 Chat Conversacional
+Envía mensajes como en una app de mensajería y recibe respuestas útiles, empáticas y con respaldo profesional.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### 💡 Recursos de Ayuda
+Accede rápidamente a teléfonos de emergencia, líneas de ayuda, sitios oficiales y otros recursos disponibles en tu zona.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 🌱 Apoyo Emocional
+Consejos prácticos para manejar emociones, mejorar tu autoestima, entender lo que sientes y recordar que **no estás solo/a**.
 
-## Get a fresh project
+### 🔍 Descubre
+Contenido educativo y confiable sobre:
+- Salud mental 🧠
+- Adicciones 🚭
+- Bullying y violencia escolar 🚨
+- Salud sexual y reproductiva ❤️‍🔥
+- ¿Qué es Cecy y cómo te puede ayudar?
 
-When you're ready, run:
+---
+
+## 🛡️ Privacidad ante todo
+
+En **CecyBot** respetamos tu privacidad:
+- **No recopilamos información sensible**.
+- Tus conversaciones son **anónimas** y **no se almacenan**.
+- Toda la información ha sido seleccionada y validada con fuentes oficiales.
+
+---
+
+## 🚀 Tecnologías usadas
+
+- **React Native** + **Expo** + **Expo Router**
+- **TypeScript**
+- **React Native Reanimated** para animaciones fluidas
+- **EAS Build** para distribución multiplataforma
+- **Lottie** y animaciones personalizadas 🎞️
+
+---
+
+## 🔐 Cumplimiento de tiendas
+
+La app cumple con:
+- [x] Políticas de privacidad (GDPR, CCPA-friendly)
+- [x] Uso mínimo de permisos
+- [x] Accesibilidad básica
+- [x] Sin publicidad
+- [x] Sin rastreo de datos
+- [x] Contenido verificado por profesionales
+- [x] Disponible para usuarios mayores de 13 años
+
+---
+
+## 🔧 Instalación local
 
 ```bash
-npm run reset-project
+git clone https://github.com/tuusuario/cecybot.git
+cd cecybot
+npm install
+npx expo start --dev-client
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+> 📱 Recuerda instalar tu [build de desarrollo con EAS](https://docs.expo.dev/development/introduction/) si usarás features como `expo-auth-session` con redirecciones.
 
-## Learn more
+---
 
-To learn more about developing your project with Expo, look at the following resources:
+## 🌈 Próximas funcionalidades
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- [ ] Seguimiento de estado emocional diario
+- [ ] Cuestionarios breves con resultados útiles
+- [ ] Recomendaciones personalizadas
+- [ ] Modo oscuro
+- [ ] Notificaciones amigables
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
+## 🤝 Créditos
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Desarrollado con amor por **Alan Garcia Diaz**  
+Inspirado por la necesidad de brindar una herramienta segura, empática y confiable para quien necesite un espacio de escucha.
+
+---
+
+## 📬 Contacto
+
+¿Dudas, sugerencias o colaboración?  
+📧 [alangarciadiazgardy@gmail.com](mailto:alangarciadiazgardy@gmail.com)
+
+---
+
+## 📄 Licencia
+
+MIT License — puedes usar, modificar y compartir este proyecto con libertad (pero con amor 💚).

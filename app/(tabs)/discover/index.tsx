@@ -9,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image,
 } from "react-native";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -28,6 +29,15 @@ interface Topic {
 
 export default function DiscoverScreen() {
   const topics: Topic[] = [
+    {
+      id: "cecy-presentation",
+      title: "Conoce a Cecy",
+      description: "Descubre quién es tu compañera de apoyo y orientación",
+      icon: <AntDesign name="message1" size={32} color="#FFFFFF" />,
+      color: "#53AB32",
+      gradient: ["#53AB32", "#A6CD38"],
+      route: "/discover/cecy-presentation",
+    },
     {
       id: "addictions",
       title: "Adicciones",
@@ -97,8 +107,41 @@ export default function DiscoverScreen() {
           </Text>
         </View>
 
+        {/* Destacar a Cecy */}
+        <TouchableOpacity
+          style={styles.cecyHighlightCard}
+          onPress={() => handleTopicPress("/discover/cecy-presentation")}
+          activeOpacity={0.8}
+        >
+          <LinearGradient
+            colors={["#53AB32", "#A6CD38"]}
+            style={styles.cecyGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+          >
+            <View style={styles.cecyContent}>
+              <View style={styles.cecyImageContainer}>
+                <Image
+                  source={require("@/assets/images/CecyApp.jpg")}
+                  style={styles.cecyImage}
+                  resizeMode="cover"
+                />
+              </View>
+              <View style={styles.cecyTextContainer}>
+                <Text style={styles.cecyTitle}>¡Conoce a Cecy!</Text>
+                <Text style={styles.cecyDescription}>
+                  Tu compañera de apoyo y orientación está aquí para ayudarte
+                </Text>
+              </View>
+              <View style={styles.cecyArrow}>
+                <Feather name="arrow-right" size={20} color="#FFFFFF" />
+              </View>
+            </View>
+          </LinearGradient>
+        </TouchableOpacity>
+
         <View style={styles.topicsGrid}>
-          {topics.map((topic, index) => (
+          {topics.slice(1).map((topic, index) => (
             <TouchableOpacity
               key={topic.id}
               style={[
@@ -193,7 +236,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   welcomeSection: {
-    marginBottom: 32,
+    marginBottom: 24,
   },
   welcomeTitle: {
     fontSize: 24,
@@ -205,6 +248,54 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#64748B",
     lineHeight: 24,
+  },
+  cecyHighlightCard: {
+    marginBottom: 24,
+    borderRadius: 20,
+    overflow: "hidden",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  cecyGradient: {
+    padding: 20,
+  },
+  cecyContent: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  cecyImageContainer: {
+    marginRight: 16,
+  },
+  cecyImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    borderWidth: 3,
+    borderColor: "#FFFFFF",
+  },
+  cecyTextContainer: {
+    flex: 1,
+  },
+  cecyTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#FFFFFF",
+    marginBottom: 4,
+  },
+  cecyDescription: {
+    fontSize: 14,
+    color: "#FFFFFF",
+    opacity: 0.9,
+    lineHeight: 20,
+  },
+  cecyArrow: {
+    marginLeft: 12,
   },
   topicsGrid: {
     marginBottom: 32,

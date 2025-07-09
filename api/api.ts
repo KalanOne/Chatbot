@@ -9,12 +9,13 @@ import { Platform } from "react-native";
 
 export { http };
 
-export type { HttpArguments };
+  export type { HttpArguments };
 
 const apisUrls = {
   translateApi:
-    process.env.EXPO_PUBLIC_API_TRANSLATE_URL ??
-    "https://82407.pythonanywhere.com",
+    process.env.EXPO_PUBLIC_API_TRANSLATE_URL,
+  chatApi:
+    process.env.EXPO_PUBLIC_API_CHAT_URL,
 };
 
 interface HttpArguments {
@@ -29,17 +30,38 @@ interface HttpArguments {
   baseURL?: keyof typeof apisUrls;
 }
 
-const http = async <T>({
+/**
+ * Makes an HTTP request using Axios with JWT authentication and customizable options.
+ *
+ * @template T The expected response data type.
+ * @param {Object} args - The arguments for the HTTP request.
+ * @param {string} args.path - The endpoint path for the request.
+ * @param {"GET" | "POST" | "PUT" | "DELETE" | "PATCH"} [args.method="POST"] - The HTTP method to use.
+ * @param {any} [args.data] - The request payload data.
+ * @param {Record<string, any>} [args.params={}] - Query parameters to include in the request.
+ * @param {boolean} [args.dataWithFiles=false] - Whether the request includes file uploads (sets content type to multipart/form-data).
+ * @param {"json" | "blob" | "arraybuffer" | "document" | "text" | "stream"} [args.responseType="json"] - The expected response type.
+ * @param {Record<string, string>} [args.extraHeaders={}] - Additional headers to include in the request.
+ * @param {(data: any, headers: any) => any} [args.transformRequest] - Optional function to transform the request before sending.
+ * @param {string} [args.baseURL="translateApi"] - The base URL key to use from the `apisUrls` object.
+ * @returns {Promise<T>} The response data of type `T`.
+ *
+ * @throws {AxiosError} Will throw an error if the HTTP request fails.
+ *
+ * @remarks
+ * - Retrieves JWT from localStorage (web) or SecureStore (native).
+ * - Filters out null or undefined query parameters.
+ * - Automatically sets the `Authorization` header if a JWT is available.
+ * - Sets the appropriate `Content-Type` header based on `dataWithFiles`.
+ */
+async function http<T>({
   path,
   method = "POST",
   data,
   params = {},
   dataWithFiles = false,
-  responseType = "json",
-  extraHeaders = {},
-  transformRequest,
   baseURL = "translateApi",
-}: HttpArguments): Promise<T> => {
+}: HttpArguments): Promise<T> {
   let jwt;
   if (Platform.OS === "web") {
     try {
@@ -72,14 +94,11 @@ const http = async <T>({
       "Content-Type": dataWithFiles
         ? "multipart/form-data"
         : "application/json",
-      ...extraHeaders,
     },
-    responseType: responseType,
-    transformRequest,
   };
 
   let response: AxiosResponse<T, T>;
   response = await axios(request);
 
   return response.data;
-};
+}
