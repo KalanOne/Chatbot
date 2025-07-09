@@ -1,11 +1,19 @@
 # 💚 CecyBot – Tu compañera de bienestar emocional
 
-![GitHub last commit](https://img.shields.io/github/last-commit/KalanOne/Chatbot)
-![GitHub stars](https://img.shields.io/github/stars/KalanOne/Chatbot?style=social)
-![GitHub issues](https://img.shields.io/github/issues/KalanOne/Chatbot)
-![GitHub license](https://img.shields.io/github/license/KalanOne/Chatbot)
+<p align="center">
+  <img src="ScreenShots/IPhone%20Visual%20Mode%20Talking.jpeg" alt="Chat visual" width="30%" style="border-radius: 15px; margin-right: 10px;" />
+  <img src="ScreenShots/IPhone%20Resources.jpeg" alt="Recursos de ayuda" width="30%" style="border-radius: 15px; margin: 0 10px;" />
+  <img src="ScreenShots/IPhone%20Discover.jpeg" alt="Descubrir" width="30%" style="border-radius: 15px; margin-left: 10px;" />
+</p>
 
 > App móvil desarrollada con ❤️ para brindar apoyo emocional, información confiable y herramientas de ayuda personal de manera segura, privada y amigable.
+
+<div align="center">
+  <img src="https://img.shields.io/github/last-commit/KalanOne/Chatbot?color=4ade80&label=Last%20Commit&style=flat-square" alt="Last Commit" style="border-radius:5px" />
+  <img src="https://img.shields.io/github/stars/KalanOne/Chatbot?style=flat-square&color=facc15" alt="Stars" style="border-radius:5px" />
+  <img src="https://img.shields.io/github/issues/KalanOne/Chatbot?style=flat-square&color=ef4444" alt="Issues" style="border-radius:5px" />
+  <img src="https://img.shields.io/github/license/KalanOne/Chatbot?style=flat-square&color=6366f1" alt="License" style="border-radius:5px" />
+</div>
 
 ---
 
@@ -39,14 +47,6 @@ En **CecyBot** respetamos tu privacidad:
 - **No recopilamos información sensible**.
 - Tus conversaciones son **anónimas** y **no se almacenan**.
 - Toda la información ha sido seleccionada y validada con fuentes oficiales.
-
----
-
-## 📱 Capturas de pantalla
-
-| Chat visual 🤖 | Recursos de ayuda 🧭 | Modo clásico 💬 |
-|:--:|:--:|:--:|
-| ![Visual Chat](screenshots/visual.png) | ![Ayuda](screenshots/help.png) | ![Chat](screenshots/chat.png) |
 
 ---
 
