@@ -56,7 +56,7 @@ En **CecyBot** respetamos tu privacidad:
 - **TypeScript**
 - **React Native Reanimated** para animaciones fluidas
 - **EAS Build** para distribución multiplataforma
-- **Lottie** y animaciones personalizadas 🎞️
+- **Lottie** y animaciones personalizadas
 
 ---
 
@@ -76,7 +76,7 @@ La app cumple con:
 ## 🔧 Instalación local
 
 ```bash
-git clone https://github.com/tuusuario/cecybot.git
+git clone https://github.com/KalanOne/Chatbot.git
 cd cecybot
 npm install
 npx expo start --dev-client
