@@ -32,7 +32,7 @@
           "image": "./assets/images/ImagenApp.jpg",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#F19433"
         }
       ],
       "expo-audio",
